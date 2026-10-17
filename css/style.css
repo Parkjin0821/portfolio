@@ -1,0 +1,1422 @@
+/* ============ 박진 Portfolio — Blue/Black ============ */
+:root{
+  --bg0:#05070D; --bg1:#0A1128; --bg2:#0B1220;
+  --line:#1E2A44; --line2:#2A3A5C;
+  --blue:#3B82F6; --blue-d:#2563EB; --cyan:#22D3EE; --cyan-l:#7DD3FC;
+  --txt:#F1F5FB; --txt2:#B9C6DB; --sub:#8B9BB4; --dim:#5B6B85;
+  --kr:'Pretendard Variable','Pretendard','Noto Sans KR',sans-serif;
+  --mono:'Pretendard Variable','Pretendard',sans-serif;
+  --ease:cubic-bezier(.65,0,.35,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--txt);font-family:var(--kr)}
+button{font-family:inherit;background:none;border:none;cursor:pointer;color:inherit}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(34,211,238,.3)}
+
+/* ---------- 고정 UI ---------- */
+.topbar{position:fixed;inset:0 0 auto 0;display:flex;justify-content:space-between;align-items:center;
+  padding:34px 64px;z-index:50;pointer-events:none}
+.logo{font-family:var(--mono);font-weight:700;font-size:24px;letter-spacing:1px;pointer-events:auto}
+.menu{display:flex;gap:40px;pointer-events:auto}
+.menu a{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--sub);cursor:pointer;transition:color .3s}
+.menu a:hover{color:var(--cyan-l)}
+.menu a.active{color:var(--cyan)}
+
+.dotnav{position:fixed;left:44px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;z-index:50}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line2);position:relative;transition:background .4s,transform .4s}
+.dot:hover{background:var(--cyan-l)}
+.dot.active{background:var(--cyan);transform:scale(1.15)}
+.dot.active::after{content:'';position:absolute;inset:-7px;border:1.5px solid rgba(34,211,238,.8);border-radius:50%;
+  animation:dotPulse .5s var(--ease)}
+.dot.active{box-shadow:0 0 12px 2px rgba(34,211,238,.7)}
+@keyframes dotPulse{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+
+/* ---------- 풀페이지 ----------
+   transition 과 will-change 를 의도적으로 두지 않는다.
+   #fullpage 는 8.7메가픽셀짜리 엘리먼트라 will-change:transform 을 걸면
+   전체가 영구 합성 레이어로 승격되고(DPR 2에서 ~139MB), 그 규모에서 크롬이
+   GPU 합성을 포기하면 transform 보간이 수 초간 멈춘다. 위치는 JS가 같은
+   프레임에 확정하고, 움직임은 .page.entering 크로스페이드가 담당한다. */
+#fullpage{height:100%}
+.page{height:100vh;position:relative;overflow:hidden;padding:120px 160px 60px;
+  background:
+    radial-gradient(1.2px 1.2px at 8% 12%,rgba(255,255,255,.45),transparent 50%),
+    radial-gradient(1px 1px at 23% 64%,rgba(255,255,255,.3),transparent 50%),
+    radial-gradient(1.4px 1.4px at 41% 28%,rgba(147,197,253,.42),transparent 50%),
+    radial-gradient(1px 1px at 58% 79%,rgba(255,255,255,.28),transparent 50%),
+    radial-gradient(1.2px 1.2px at 71% 15%,rgba(255,255,255,.4),transparent 50%),
+    radial-gradient(1px 1px at 86% 51%,rgba(196,181,253,.35),transparent 50%),
+    radial-gradient(1.3px 1.3px at 94% 87%,rgba(255,255,255,.32),transparent 50%),
+    radial-gradient(1px 1px at 33% 92%,rgba(255,255,255,.26),transparent 50%),
+    radial-gradient(1.1px 1.1px at 65% 42%,rgba(255,255,255,.3),transparent 50%),
+    radial-gradient(1px 1px at 15% 38%,rgba(147,197,253,.3),transparent 50%),
+    linear-gradient(180deg,#060224 0%,#030014 55%,#02000e 100%)}
+.page::before{content:'';position:absolute;width:700px;height:700px;border-radius:50%;
+  background:rgba(124,58,237,.15);filter:blur(180px);pointer-events:none}
+.about::before{right:-200px;top:-200px}
+.skills::before{right:-150px;bottom:-250px}
+.projects::before{left:-250px;top:-200px}
+.contest::before{right:-200px;top:-250px;background:rgba(88,28,135,.18)}
+.timeline::before{left:-250px;bottom:-200px}
+.contact::before{left:50%;top:20%;transform:translateX(-50%);background:rgba(124,58,237,.2)}
+
+/* ---------- 섹션 헤더 ---------- */
+.section-head{margin-bottom:44px;position:relative;z-index:2}
+.sec-num{display:none}
+.section-head h2,.contact-inner h2{font-size:46px;font-weight:900;letter-spacing:-.5px}
+.sec-desc{font-size:16px;color:var(--sub);margin-top:10px}
+.bar{width:64px;height:3px;background:var(--blue);margin-top:18px}
+.center{text-align:center}
+
+/* ---------- HERO ---------- */
+.hero{padding:0;display:flex;align-items:center}
+#particles{position:absolute;inset:0;width:100%;height:100%}
+.rings{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:1040px;height:1040px;pointer-events:none}
+.rings span{position:absolute;inset:0;border:1px solid rgba(59,130,246,.14);border-radius:50%}
+.rings span:nth-child(2){inset:140px;border-color:rgba(59,130,246,.2);animation:spin 60s linear infinite}
+.rings span:nth-child(3){inset:270px;border:1px dashed rgba(34,211,238,.28);animation:spin 40s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rings .core{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 30px 8px rgba(34,211,238,.6);animation:corePulse 2.4s ease-in-out infinite}
+@keyframes corePulse{50%{box-shadow:0 0 46px 14px rgba(34,211,238,.8)}}
+.hero-inner{position:relative;z-index:2;padding-left:160px;max-width:1100px}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;border-radius:999px;
+  border:1px solid rgba(34,211,238,.35);background:rgba(14,165,233,.08);
+  font-family:var(--mono);font-size:12px;letter-spacing:3px;color:var(--cyan-l);margin-bottom:30px}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:corePulse 2s infinite}
+.tagline{font-size:82px;font-weight:900;line-height:1.2;min-height:1.2em;letter-spacing:-2px;
+  white-space:nowrap}
+#rotator{display:inline;background:linear-gradient(100deg,#fff 0%,#7DD3FC 55%,#22D3EE 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 40px rgba(34,211,238,.35))}
+.cursor{display:inline-block;width:5px;height:.82em;background:var(--cyan);margin-left:4px;vertical-align:-3px;
+  animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.name-en{font-family:var(--mono);font-size:16px;letter-spacing:6px;color:var(--cyan);margin-top:40px}
+.divider{width:120px;height:3px;margin:26px 0 22px;background:linear-gradient(90deg,var(--blue),transparent)}
+.scroll-hint{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);text-align:center;z-index:2}
+.mouse{width:28px;height:46px;border:1.5px solid #4B5D7E;border-radius:14px;margin:0 auto 8px;position:relative}
+.mouse span{position:absolute;left:50%;top:8px;width:6px;height:12px;margin-left:-3px;border-radius:3px;background:var(--cyan);
+  animation:wheel 1.6s ease-in-out infinite}
+@keyframes wheel{50%{transform:translateY(10px);opacity:.3}}
+.scroll-hint p{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:#4B5D7E}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:flex;gap:90px;align-items:center;position:relative;z-index:2}
+.photo-wrap{position:relative;flex-shrink:0}
+.photo-frame{width:320px;height:400px;border-radius:20px;overflow:hidden;position:relative;
+  border:1px solid var(--line2);background:linear-gradient(135deg,#13224a,#0b3a4a)}
+.photo-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-frame .photo-fallback{display:none;position:absolute;inset:0;place-content:center;text-align:center;
+  font-family:var(--mono);font-size:14px;letter-spacing:4px;color:#5B7A9C}
+.photo-frame.noimg .photo-fallback{display:grid}
+.photo-frame::after{content:'';position:absolute;inset:0;border-radius:20px;
+  border:1px solid rgba(34,211,238,.35);pointer-events:none}
+.photo-glow{position:absolute;inset:-14px;border-radius:26px;border:1px dashed rgba(59,130,246,.3);z-index:-1;
+  transform:rotate(-2deg)}
+.about-text h3{font-size:32px;font-weight:700;line-height:1.5;margin-bottom:30px}
+.about-text em{font-style:normal;color:var(--cyan)}
+.about-points{list-style:none;display:flex;flex-direction:column;gap:16px;margin-bottom:38px}
+.about-points li{position:relative;padding-left:22px;color:var(--sub);font-size:16px;line-height:1.7}
+.about-points li::before{content:'';position:absolute;left:0;top:11px;width:7px;height:7px;border-radius:50%;background:var(--cyan)}
+.about-points b{color:var(--txt2);font-weight:700}
+.about-points em{font-style:normal;color:#FCD34D}
+.about-closing{font-size:22px;font-weight:700;color:var(--txt2);line-height:1.6;
+  padding-left:22px;border-left:3px solid var(--cyan)}
+.about-closing em{font-style:normal;color:var(--cyan)}
+
+/* ---------- SKILLS ---------- */
+.skills-grid{display:flex;gap:60px;position:relative;z-index:2}
+.col-label{font-family:var(--mono);font-size:13px;letter-spacing:3px;color:var(--cyan-l);margin-bottom:22px}
+.cards3{display:flex;gap:24px}
+.skill-card{width:330px;background:rgba(11,18,32,.9);border:1px solid var(--line);border-radius:16px;padding:28px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);transition:transform .35s,border-color .35s}
+.skill-card:hover{transform:translateY(-6px);border-color:rgba(34,211,238,.4)}
+.skill-card .icon{width:44px;height:44px;border-radius:12px;background:rgba(30,58,138,.55);display:grid;place-content:center;
+  font-family:var(--mono);font-size:18px;color:var(--cyan-l);margin-bottom:18px}
+.skill-card h4{font-size:21px;margin-bottom:22px}
+.skill{margin-bottom:20px;position:relative}
+.skill p{font-size:14px;color:var(--txt2);margin-bottom:10px;padding-right:48px}
+.skill em{position:absolute;right:0;top:2px;font-family:var(--mono);font-style:normal;font-size:12px;color:var(--cyan)}
+.track{height:6px;border-radius:3px;background:#16213A;overflow:hidden}
+.track span{display:block;height:100%;width:0;border-radius:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width 1.1s var(--ease) .2s}
+.page.active .track span{width:var(--w)}
+.cert-col{flex:1;min-width:380px}
+.cert{display:flex;align-items:center;gap:20px;background:rgba(11,18,32,.9);border:1px solid var(--line);
+  border-radius:16px;padding:18px 22px;margin-bottom:16px;transition:border-color .3s,transform .3s}
+.cert:hover{border-color:rgba(34,211,238,.4);transform:translateX(6px)}
+.cert i{width:44px;height:44px;border-radius:50%;background:rgba(14,116,144,.35);border:1px solid rgba(34,211,238,.6);
+  display:grid;place-content:center;font-style:normal;color:var(--cyan);font-weight:700;flex-shrink:0}
+.cert h5{font-size:17px;margin-bottom:4px}
+.cert p{font-size:13px;color:var(--sub)}
+.cert.dim{opacity:.45;border-style:dashed}
+.cert.dim i{background:rgba(42,58,92,.3);border-color:var(--line2);color:var(--dim)}
+.cert.gold{border-color:rgba(245,158,11,.45)}
+.cert.gold i{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.55)}
+.cert.gold:hover{border-color:#F59E0B}
+
+/* ---------- 카드 공통(프로젝트/공모전) ---------- */
+.card-row{display:flex;gap:22px;position:relative;z-index:2}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tags i{font-family:var(--mono);font-style:normal;font-size:11px;color:#93C5FD;
+  padding:5px 11px;border-radius:7px;background:rgba(30,58,138,.35);border:1px solid rgba(59,130,246,.4)}
+.more{font-size:13px;color:var(--cyan);font-weight:500;margin-top:auto;text-align:left;padding-top:14px;transition:letter-spacing .3s}
+.more:hover{letter-spacing:1px}
+
+/* ---------- PROJECTS ---------- */
+.pcard{width:395px;background:rgba(11,18,32,.95);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;cursor:pointer;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s;
+  box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.pcard:hover{transform:translateY(-10px);border-color:rgba(34,211,238,.5);box-shadow:0 18px 44px rgba(13,60,120,.45)}
+.pcard.award{border-color:rgba(34,211,238,.5)}
+.thumb{height:190px;position:relative;flex-shrink:0;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85}
+.thumb b{position:absolute;left:24px;top:18px;font-size:40px;font-weight:900;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.thumb.ax{background:linear-gradient(135deg,#13254f,#29195c)}
+.thumb.bx{background:linear-gradient(135deg,#0d3366,#0b4a5c)}
+.thumb.cx{background:linear-gradient(135deg,#0b404d,#13254f)}
+.thumb.dx{background:linear-gradient(135deg,#1a1f61,#0d4d61)}
+.ribbon{position:absolute;right:14px;top:14px;font-size:12px;font-weight:700;font-style:normal;color:#FCD34D;
+  padding:6px 12px;border-radius:999px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.6)}
+.pcard h4{font-size:20px;padding:22px 28px 0}
+.pcard>p{font-size:13.5px;line-height:1.6;color:var(--sub);padding:12px 28px 0;flex-grow:1}
+.role{padding:16px 28px 0;font-size:13px;color:var(--cyan-l)}
+.role span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--dim);margin-bottom:5px}
+.pcard .tags{padding:14px 28px 0}
+.pcard .more{padding:14px 28px 24px}
+
+/* ---------- CONTEST ---------- */
+.card-row.two{gap:40px}
+.ccard{flex:1;max-width:780px;background:rgba(11,18,32,.95);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  display:flex;flex-direction:column;cursor:pointer;transition:transform .4s var(--ease),border-color .4s;
+  box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.ccard:hover{transform:translateY(-8px);border-color:rgba(34,211,238,.5)}
+.ccard.award{border-color:rgba(245,158,11,.4)}
+.cthumb{height:150px;position:relative;overflow:hidden}
+.cthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8}
+.cthumb.g1{background:linear-gradient(135deg,#1f1a59,#0d3366)}
+.cthumb.g2{background:linear-gradient(135deg,#0d2e61,#0b4a5c)}
+.badge{position:absolute;left:24px;top:22px;font-size:13px;font-weight:700;color:var(--cyan-l);
+  padding:7px 14px;border-radius:999px;background:rgba(14,165,233,.15);border:1px solid rgba(34,211,238,.55)}
+.cribbon{position:absolute;right:24px;top:22px;font-size:13px;font-weight:700;font-style:normal;color:#FCD34D;
+  padding:7px 14px;border-radius:999px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.6)}
+.ccard h4{font-size:23px;padding:24px 32px 0}
+.corg{font-size:13px;color:var(--dim);padding:8px 32px 0}
+.cdesc{font-size:14px;line-height:1.65;color:var(--sub);padding:12px 32px 0}
+.ccard ul{list-style:none;padding:14px 32px 0;display:flex;flex-direction:column;gap:8px}
+.ccard li{position:relative;padding-left:18px;font-size:13.5px;color:var(--txt2)}
+.ccard li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+.ccard .tags{padding:18px 32px 0}
+.ccard .more{padding:14px 32px 26px}
+
+/* ---------- TIMELINE ---------- */
+.timeline{display:flex;flex-direction:column;padding-bottom:44px}
+.timeline .section-head{margin-bottom:16px}
+.tl-wrap{position:relative;z-index:2;max-width:1440px;margin:0 auto;width:100%;
+  flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly}
+.tl-line{position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;border-radius:2px;background:rgba(42,58,92,.4);overflow:hidden}
+.tl-line span{display:block;width:100%;height:0;border-radius:2px;
+  background:linear-gradient(180deg,var(--blue),var(--cyan));transition:height 1.4s var(--ease) .2s}
+.page.active .tl-line span{height:100%}
+.tl-item{position:relative;width:50%;padding:6px 60px;opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
+.page.active .tl-item{opacity:1;transform:none}
+/* 스태거 유지, 간격만 축소 (마지막 항목까지 ~0.75s 안에 도착) */
+.tl-item:nth-child(2){transition-delay:.05s}.tl-item:nth-child(3){transition-delay:.10s}
+.tl-item:nth-child(4){transition-delay:.15s}.tl-item:nth-child(5){transition-delay:.20s}.tl-item:nth-child(6){transition-delay:.25s}
+.tl-item.left{margin-right:auto;text-align:right}
+.tl-item.right{margin-left:auto}
+.tl-item::before{content:'';position:absolute;top:50%;width:16px;height:16px;margin-top:-8px;border-radius:50%;
+  background:var(--blue);border:4px solid #0A101E;z-index:2}
+.tl-item.left::before{right:-8px}
+.tl-item.right::before{left:-8px}
+.tl-item.hl::before{background:var(--cyan);box-shadow:0 0 16px 3px rgba(34,211,238,.7)}
+.tl-card{display:inline-block;text-align:left;background:rgba(11,18,32,.9);border:1px solid var(--line);
+  border-radius:14px;padding:14px 22px;max-width:440px;transition:border-color .3s}
+.tl-item.hl .tl-card{border-color:rgba(34,211,238,.4)}
+.tl-card:hover{border-color:var(--cyan)}
+.tl-card em{font-family:var(--mono);font-style:normal;font-size:11px;letter-spacing:2px;color:var(--cyan)}
+.tl-card h5{font-size:16px;margin:5px 0 4px}
+.tl-card p{font-size:12px;color:var(--sub)}
+
+/* ---------- CONTACT ---------- */
+.contact{display:flex;align-items:center;justify-content:center;text-align:center}
+.contact-inner{position:relative;z-index:2;width:100%}
+.contact h2{font-size:52px;margin:14px 0}
+.links{display:flex;gap:34px;justify-content:center;margin:60px 0 50px}
+.link-card{width:300px;background:rgba(11,18,32,.9);border:1px solid var(--line);border-radius:18px;padding:30px 20px;
+  transition:transform .35s,border-color .35s,box-shadow .35s}
+.link-card:hover{transform:translateY(-8px);border-color:rgba(34,211,238,.5);box-shadow:0 0 30px rgba(34,211,238,.15)}
+.link-card i{display:grid;place-content:center;width:56px;height:56px;margin:0 auto 16px;border-radius:50%;
+  background:rgba(30,58,138,.5);border:1px solid rgba(59,130,246,.5);font-style:normal;font-size:20px;font-weight:700;color:var(--cyan-l);
+  transition:transform .35s}
+.link-card:hover i{transform:translateY(-5px) scale(1.08)}
+.link-card h5{font-size:18px;margin-bottom:8px}
+.link-card p{font-family:var(--mono);font-size:12px;color:#5B8CC9;word-break:break-all}
+.mail-btn{display:inline-block;padding:16px 36px;border-radius:12px;font-weight:700;font-size:16px;color:#fff;
+  background:linear-gradient(90deg,#2563EB,#0da6d4);box-shadow:0 8px 28px rgba(37,99,235,.45);transition:transform .3s,box-shadow .3s}
+.mail-btn:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(37,99,235,.6)}
+.copy{margin-top:60px;font-family:var(--mono);font-size:11px;color:#3E4E6B}
+
+/* ---------- 반페이지 상세 패널 ---------- */
+.scrim{position:fixed;inset:0;background:rgba(2,4,10,.55);opacity:0;pointer-events:none;transition:opacity .4s;z-index:80}
+.scrim.open{opacity:1;pointer-events:auto}
+.panel{position:fixed;top:0;right:0;width:50vw;min-width:640px;height:100vh;background:#0A101E;
+  border-left:1px solid var(--line);box-shadow:-20px 0 60px rgba(0,0,0,.6);z-index:90;
+  transform:translateX(102%);transition:transform .45s var(--ease);overflow-y:auto}
+.panel.open{transform:none}
+.panel::-webkit-scrollbar{width:6px}
+.panel::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.close{position:sticky;top:28px;margin-left:calc(100% - 76px);width:44px;height:44px;border-radius:50%;
+  background:#111A2E;border:1px solid var(--line2);color:var(--sub);font-size:16px;z-index:5;transition:color .3s,border-color .3s}
+.close:hover{color:var(--cyan);border-color:var(--cyan)}
+.panel-body{padding:20px 80px 80px}
+.panel-body .p-label{font-family:var(--mono);font-size:12px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px}
+.panel-body .p-label.gold{color:#FCD34D}
+.panel-body h3{font-size:36px;font-weight:900;margin-bottom:14px}
+.panel-body .p-meta{font-size:14px;color:var(--dim);margin-bottom:28px}
+.panel-body .p-hero{height:280px;border-radius:16px;margin-bottom:34px;overflow:hidden;position:relative;
+  display:grid;place-content:center;background:linear-gradient(135deg,#1a1f61,#0d4d61)}
+.panel-body .p-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.panel-body .p-hero span{font-size:14px;color:#9FC4E8;position:relative}
+.panel-body h4{font-size:19px;margin:30px 0 14px}
+.panel-body .p-text{font-size:14.5px;line-height:1.75;color:var(--sub)}
+.panel-body ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.panel-body li{position:relative;padding-left:20px;font-size:14px;line-height:1.55;color:var(--txt2)}
+.panel-body li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--cyan)}
+.metrics{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.metric{flex:1;min-width:130px;background:#0E1730;border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.metric strong{display:block;font-size:24px;font-weight:900;color:var(--cyan)}
+.metric span{font-size:12px;color:var(--sub)}
+.panel-body .tags{margin-top:26px}
+.gh-btn{display:inline-block;margin-top:26px;padding:12px 22px;border-radius:10px;background:var(--blue-d);
+  color:#fff;font-size:13px;font-weight:700;transition:transform .3s}
+.gh-btn:hover{transform:translateY(-2px)}
+.gh-btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--cyan-l);margin-top:12px}
+.gh-btn.ghost:hover{border-color:var(--cyan)}
+/* PPT 임베드 */
+.embed-wrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  border:1px solid var(--line);background:#05070D;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* 자료 보기 */
+.files{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.file-btn{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;
+  background:#0E1730;border:1px solid var(--line);transition:border-color .3s,transform .3s,background .3s}
+.file-btn:hover{border-color:var(--cyan);transform:translateY(-2px);background:#101c3a}
+.file-btn i{flex-shrink:0;width:40px;height:40px;border-radius:10px;display:grid;place-content:center;
+  font-style:normal;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px}
+.file-btn i.pdf{background:rgba(220,68,90,.15);border:1px solid rgba(220,68,90,.5);color:#F87A8C}
+.file-btn i.img{background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.5);color:#93C5FD}
+.file-btn i.code{background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.5);color:var(--cyan)}
+.file-btn div{min-width:0}
+.file-btn h6{font-size:13.5px;font-weight:700;color:var(--txt2);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-btn p{font-family:var(--mono);font-size:10.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ---------- 섹션 진입 슬라이드 ----------
+   실제 슬라이드 애니메이션은 js/main.js 의 goTo() 가 인라인 style로 직접
+   담당한다("필름스트립" 두-페이지 트릭, #fullpage 자체는 절대 건드리지
+   않음). 여기엔 CSS 규칙이 필요 없다 — 트랜지션 속성은 JS가 필요한 순간에만
+   부여했다가 애니메이션이 끝나면 다시 제거하므로, 정적인 will-change 도
+   두지 않는다. */
+
+/* ---------- 등장 애니메이션 ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.page.active .reveal{opacity:1;transform:none}
+/* 스태거는 유지하되, 섹션이 도착한 뒤에도 화면이 비어 보이지 않도록 간격 축소 */
+.page.active .reveal:nth-child(2){transition-delay:.05s}
+.page.active .reveal:nth-child(3){transition-delay:.10s}
+.page.active .reveal:nth-child(4){transition-delay:.15s}
+.page.active .reveal:nth-child(5){transition-delay:.20s}
+
+/* 낮은 화면에서 타임라인 자동 압축 */
+@media (max-height:1000px){
+  .timeline{padding-top:90px;padding-bottom:30px}
+  .timeline .section-head{margin-bottom:10px}
+  .timeline .section-head h2{font-size:36px}
+  .timeline .sec-desc{margin-top:6px}
+  .timeline .bar{margin-top:10px}
+  .tl-item{padding:3px 60px}
+  .tl-card{padding:10px 18px}
+  .tl-card h5{font-size:14.5px}
+  .tl-card p{font-size:11px}
+}
+
+/* ---------- 반응형 (최소한) ---------- */
+@media (max-width:1500px){
+  .page{padding:110px 110px 50px}
+  .hero-inner{padding-left:110px}
+  .pcard{width:calc(25% - 17px)}
+  .name{font-size:88px}.tagline{font-size:46px}
+}
+
+
+/* ===== 카드 상단 라벨 (프로젝트·공모전 공통) ===== */
+.card-item{display:flex;flex-direction:column;gap:12px}
+.card-row .card-item{flex:1 1 0;min-width:0}
+.card-item>.pcard,.card-item>.ccard{width:100%;height:100%;margin:0}
+.card-row.two .card-item{flex:1 1 0;max-width:780px}
+.card-topic{font-family:var(--kr);font-size:13.5px;font-weight:700;letter-spacing:0;
+  color:var(--cyan-l);padding-left:6px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.topic-award{font-style:normal;font-family:var(--kr);font-size:11px;font-weight:700;color:#FCD34D;
+  padding:3px 9px;border-radius:999px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.5)}
+
+
+/* 낮은 화면에서 스킬 섹션 압축 */
+@media (max-height:820px){
+  .skills{padding-top:78px;padding-bottom:28px}
+  .skills .section-head{margin-bottom:14px}
+  .skills .section-head h2{font-size:32px}
+  .skills .sec-desc{margin-top:6px;font-size:14px}
+  .skills .bar{margin-top:8px}
+  .skills .col-label{margin-bottom:10px}
+  .skill-card{padding:18px 20px}
+  .skill-card .icon{width:36px;height:36px;margin-bottom:12px}
+  .skill-card h4{font-size:19px;margin-bottom:12px}
+  .skill{margin-bottom:9px}
+  .skill p{margin-bottom:6px;font-size:13px}
+  .skill em{top:0}
+  .cert{padding:11px 18px;margin-bottom:9px}
+  .cert i{width:38px;height:38px}
+  .cert-col .col-label{margin-top:20px!important}
+}
+
+
+/* ===== 상세 패널 — 한 줄 요약 / 정직한 한계 / 링크 행 ===== */
+.p-oneline{margin:22px 0 4px;padding:16px 20px;border-radius:12px;background:rgba(34,211,238,.07);
+  border:1px solid rgba(34,211,238,.28);font-size:17px;font-weight:700;color:var(--txt);line-height:1.55}
+.p-oneline span{display:block;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:2px;
+  color:var(--cyan);margin-bottom:8px}
+.p-honest{margin-top:24px;padding:16px 20px;border-radius:12px;background:rgba(245,158,11,.07);
+  border:1px solid rgba(245,158,11,.3);font-size:14px;color:var(--txt2);line-height:1.75}
+.p-honest b{display:block;color:#FCD34D;font-size:13px;margin-bottom:6px}
+.links-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:stretch}
+/* 한 줄에 나란히 놓이는 링크 버튼은 높이·여백을 강제로 통일한다.
+   (.gh-btn 26px / .ghost 12px 로 margin-top 이 달랐고, ghost 에만 테두리가 있었다) */
+.links-row .gh-btn{margin-top:0;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid transparent;line-height:1.25;min-height:44px}
+.links-row .gh-btn.ghost{border-color:var(--line2)}
+
+/* ── ② 수상 인증 블록 ── 상장 사진을 파일 링크가 아니라 화면에서 바로 보이게 */
+/* 세로로 긴 상장 사진이라 가로 폭을 사진 비율에 맞춰 좁힌다 —
+   폭을 꽉 채우면 좌우에 검은 여백(레터박스)이 생겨 액자처럼 보이지 않는다. */
+.panel-body .p-proof{margin:14px auto 0;max-width:430px;border-radius:14px;overflow:hidden;
+  border:1px solid rgba(252,211,77,.34);background:#07040F;
+  box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.panel-body .p-proof a{display:block;line-height:0;background:#07040F}
+.panel-body .p-proof img{width:100%;height:auto;display:block;
+  transition:transform .5s var(--ease)}
+.panel-body .p-proof a:hover img{transform:scale(1.015)}
+.panel-body .p-proof figcaption{padding:13px 18px;background:rgba(252,211,77,.07);
+  border-top:1px solid rgba(252,211,77,.2)}
+.panel-body .p-proof figcaption b{display:block;font-size:13.5px;color:#FCD34D;margin-bottom:4px}
+.panel-body .p-proof figcaption span{display:block;font-size:12.5px;line-height:1.6;color:#B9B2CE}
+@media (max-width:900px){
+  .panel-body .p-proof{max-width:320px}
+}
+
+.file-btn i.doc{background:rgba(52,211,153,.14);border:1px solid rgba(52,211,153,.5);color:#6EE7B7}
+
+
+/* ===== 카드 열 정렬 (프로젝트·공모전) ===== */
+.card-topic{flex-wrap:nowrap; white-space:nowrap; overflow:hidden; min-height:30px}
+.ccard h4{min-height:66px}
+.topic-award{flex-shrink:0}
+.pcard > p{flex-grow:0; height:100px;
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
+.pcard .role{min-height:54px}
+.pcard .tags{min-height:34px}
+/* 공모전 카드 */
+.ccard .cdesc{height:78px;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden}
+.ccard ul{min-height:108px}
+
+
+/* ===== 표지 스크램블 내비 ===== */
+.hero-title{font-family:var(--kr);font-size:clamp(56px,8vw,118px);font-weight:800;line-height:.92;
+  letter-spacing:-.04em;text-transform:uppercase;margin:4px 0 12px;min-height:.92em;
+  background:linear-gradient(100deg,#fff 0%,#7DD3FC 55%,#22D3EE 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 44px rgba(34,211,238,.35))}
+.hero-sub{font-size:15px;color:var(--sub);letter-spacing:.01em;margin-bottom:34px}
+.hero-cards{display:flex;gap:12px;flex-wrap:wrap;max-width:920px;position:relative;z-index:2}
+.hero-card{position:relative;flex:0 0 130px;width:130px;height:148px;padding:16px 14px;text-align:left;
+  border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(255,255,255,.045);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:pointer;overflow:hidden;
+  display:flex;flex-direction:column;color:#fff;
+  transition:transform .3s var(--ease),background .3s,border-color .3s,box-shadow .3s}
+.hero-card:hover,.hero-card.is-active{transform:translateY(-7px);background:rgba(34,211,238,.1);
+  border-color:rgba(34,211,238,.5);box-shadow:0 14px 32px rgba(13,60,120,.42)}
+.hc-num{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:1px}
+.hc-label{margin-top:auto;font-size:16px;font-weight:800;letter-spacing:.02em}
+.hc-ko{font-size:12px;color:var(--sub);margin-top:5px}
+/* HOME 버튼 (내부 페이지에서만 표시) */
+.home-btn{font-family:var(--kr);font-size:13px;font-weight:700;letter-spacing:1px;
+  color:var(--cyan-l);padding:9px 16px;border:1px solid rgba(34,211,238,.4);border-radius:999px;
+  background:rgba(14,165,233,.08);opacity:0;transform:translateY(-4px);pointer-events:none;
+  transition:opacity .3s,transform .3s,border-color .3s,background .3s}
+.home-btn:hover{border-color:var(--cyan);background:rgba(14,165,233,.16)}
+.home-btn.visible{opacity:1;transform:none;pointer-events:auto}
+.logo{cursor:pointer;pointer-events:auto}
+@media (max-width:900px){
+  .hero-card{flex-basis:calc(33.333% - 8px);width:auto}
+}
+
+.hero-sub{font-size:16px;color:var(--txt2);letter-spacing:1.5px;font-weight:600}
+.hero-title{margin-top:0}
+
+
+/* ===== 발표자료 클릭 썸네일 (mixed-content 회피) ===== */
+.ppt-poster{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+  border:1px solid var(--line);background:#05070D;box-shadow:0 8px 24px rgba(0,0,0,.4);margin-top:6px;cursor:pointer}
+.ppt-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;transition:opacity .3s}
+.ppt-poster:hover img{opacity:.72}
+.ppt-play{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  font-size:17px;font-weight:700;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7);
+  background:linear-gradient(180deg,rgba(5,7,13,.15),rgba(5,7,13,.5));transition:background .3s}
+.ppt-poster:hover .ppt-play{background:linear-gradient(180deg,rgba(5,7,13,.05),rgba(5,7,13,.35))}
+.ppt-play em{font-style:normal;font-size:12px;font-weight:500;color:var(--cyan-l);letter-spacing:.4px}
+
+
+/* ===== 공모전 3카드 레이아웃 ===== */
+.card-row.three{gap:26px}
+.card-row.three .card-item{flex:1 1 0;max-width:520px}
+
+
+/* ===== Hero 우주 테마 (Hero 전용) ===== */
+.hero{background:#030014}
+.space-bg{position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 70% 30%,rgba(30,20,80,.55),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 80%,rgba(10,10,40,.5),transparent 65%),
+    #030014}
+
+/* 블랙홀: 회전하는 강착원반(conic-gradient) + 중심 글로우 */
+.blackhole{position:absolute;right:4%;top:50%;transform:translateY(-50%);
+  width:820px;height:820px;z-index:1;pointer-events:none}
+.blackhole .bh-disk{position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 0deg,
+    transparent 0deg, rgba(255,255,255,.02) 40deg,
+    rgba(147,197,253,.35) 90deg, rgba(255,255,255,.9) 150deg,
+    rgba(147,197,253,.35) 190deg, rgba(255,255,255,.02) 230deg,
+    transparent 260deg, transparent 360deg);
+  filter:blur(6px);animation:bhSpin 14s linear infinite;
+  -webkit-mask:radial-gradient(circle,transparent 30%,#000 32%,#000 46%,transparent 48%);
+  mask:radial-gradient(circle,transparent 30%,#000 32%,#000 46%,transparent 48%)}
+.blackhole .bh-disk2{inset:70px;animation:bhSpin 9s linear infinite reverse;opacity:.7;
+  -webkit-mask:radial-gradient(circle,transparent 26%,#000 28%,#000 40%,transparent 42%);
+  mask:radial-gradient(circle,transparent 26%,#000 28%,#000 40%,transparent 42%)}
+@keyframes bhSpin{to{transform:rotate(360deg)}}
+.blackhole .bh-core{position:absolute;left:50%;top:50%;width:180px;height:180px;margin:-90px;
+  border-radius:50%;background:radial-gradient(circle,#000 0%,#000 38%,rgba(30,10,50,.9) 60%,transparent 72%);
+  box-shadow:0 0 90px 40px rgba(88,28,135,.35),0 0 30px 8px rgba(0,0,0,.9)}
+
+/* 텍스트 자리 가독성 (왼쪽만 어둡게, 블랙홀 있는 오른쪽은 그대로) */
+.space-bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(3,0,20,.65) 0%,rgba(3,0,20,.3) 42%,transparent 60%)}
+
+/* 기존 링 장식은 우주 톤에 맞춰 은은하게 */
+.hero .rings span{border-color:rgba(147,197,253,.14)}
+.hero .rings span:nth-child(3){border-color:rgba(255,255,255,.18)}
+.hero .rings .core{background:#fff;box-shadow:0 0 30px 8px rgba(147,197,253,.7)}
+
+/* 유리 카드: 차가운 화이트 톤 */
+.hero-card{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.16)}
+.hero-card:hover,.hero-card.is-active{background:rgba(147,197,253,.12);
+  border-color:rgba(255,255,255,.5);box-shadow:0 14px 36px rgba(0,0,0,.5)}
+.hc-num{color:#93C5FD}
+
+@media (prefers-reduced-motion:reduce){
+  .blackhole .bh-disk,.blackhole .bh-disk2{animation:none}
+}
+@media (max-width:900px){
+  .blackhole{width:520px;height:520px;right:-10%}
+}
+
+
+/* ===== 우주 테마 전체 확장: 카드·애니메이션·타이틀 ===== */
+/* 섹션 타이틀: 화이트→아이스블루 그라디언트 */
+.section-head h2,.contact-inner h2{
+  background:linear-gradient(100deg,#fff 20%,#93C5FD 70%,#C4B5FD 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 24px rgba(147,197,253,.25))}
+.bar{background:linear-gradient(90deg,#8B5CF6,#22D3EE)}
+
+/* 카드 공통: 우주 유리 톤 + 보라·시안 글로우 호버 */
+.pcard,.ccard,.skill-card,.tl-card{position:relative;
+  background:rgba(8,6,26,.88);border-color:rgba(124,105,190,.22)}
+.pcard:hover{border-color:rgba(167,139,250,.65);
+  box-shadow:0 18px 48px rgba(88,28,135,.35),0 0 0 1px rgba(167,139,250,.25),0 0 34px rgba(139,92,246,.22)}
+.ccard:hover{border-color:rgba(167,139,250,.65);
+  box-shadow:0 16px 44px rgba(88,28,135,.35),0 0 30px rgba(139,92,246,.2)}
+.skill-card:hover{border-color:rgba(167,139,250,.55);
+  box-shadow:0 14px 36px rgba(88,28,135,.3),0 0 26px rgba(139,92,246,.18)}
+.tl-card:hover{border-color:rgba(167,139,250,.7)}
+
+/* 빛줄기 스윕: 호버 시 카드 위로 별빛이 스치고 지나감 */
+.pcard::after,.ccard::after,.skill-card::after{content:'';position:absolute;top:0;left:-85%;
+  width:55%;height:100%;pointer-events:none;z-index:3;
+  background:linear-gradient(105deg,transparent,rgba(255,255,255,.09) 45%,rgba(147,197,253,.14) 55%,transparent);
+  transform:skewX(-18deg);transition:left .75s var(--ease)}
+.pcard:hover::after,.ccard:hover::after,.skill-card:hover::after{left:130%}
+
+/* 등장 애니메이션: 좌/우 번갈아 슬라이드인 (기존 reveal 확장) */
+.card-row .card-item.reveal:nth-child(odd),.cards3 .skill-card.reveal:nth-child(odd){
+  transform:translateX(-46px)}
+.card-row .card-item.reveal:nth-child(even),.cards3 .skill-card.reveal:nth-child(even){
+  transform:translateX(46px)}
+.page.active .card-row .card-item.reveal,.page.active .cards3 .skill-card.reveal{transform:none}
+
+/* 타임라인: 별빛 라인 + 보라 포인트 */
+.tl-line span{background:linear-gradient(180deg,#8B5CF6,#22D3EE)!important}
+.tl-item.hl::before{background:#C4B5FD;box-shadow:0 0 16px 3px rgba(167,139,250,.7)}
+.tl-item.hl .tl-card{border-color:rgba(167,139,250,.45)}
+
+/* 도트 내비·상단 메뉴 액티브도 우주 톤 */
+.dot.active{background:#C4B5FD;box-shadow:0 0 12px 2px rgba(167,139,250,.7)}
+.dot.active::after{border-color:rgba(167,139,250,.8)}
+.menu a.active{color:#C4B5FD}
+.menu a:hover{color:#E9D5FF}
+
+
+/* ===== 우주 테마 v2: 전역 별밭 + 블랙홀 캔버스 ===== */
+body{background:#030014}
+#starfield{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+#fullpage{position:relative;z-index:1}
+/* 모든 섹션 배경을 반투명으로 -> 전역 별밭이 어디서든 비침 (일관된 반짝이) */
+.page{background:radial-gradient(ellipse 70% 60% at 50% 42%,rgba(3,0,20,.34),rgba(3,0,20,.8) 92%)!important}
+.hero{background:transparent!important}
+/* 블랙홀 캔버스 (Hero 오른쪽) */
+#blackhole{position:absolute;right:2%;top:50%;transform:translateY(-50%);
+  width:760px;height:760px;max-width:52vw;z-index:1;pointer-events:none;display:block}
+@media (max-width:900px){#blackhole{right:-14%;width:520px;height:520px}}
+
+
+/* ===== 블랙홀 상단 중앙 재배치 (인터스텔라 스타일) ===== */
+#blackhole{position:absolute!important;left:50%!important;right:auto!important;
+  top:-40px!important;transform:translateX(-50%)!important;
+  width:min(940px,84vw)!important;height:620px!important;max-width:none!important;
+  z-index:1;pointer-events:none;display:block}
+@media(max-width:900px){#blackhole{width:120vw!important;height:440px!important}}
+/* Hero 텍스트를 블랙홀 아래로 살짝 내려 겹침 완화 */
+.hero-inner{padding-top:180px}
+
+
+/* ============================================================
+   프로 마감 패스 — 보라 우주 테마 통일 + 실제 블랙홀 영상 + 패널 재설계
+   ============================================================ */
+
+/* 1) 액센트/배경 변수 재정의 (사이트 전역 시안 -> 보라 라벤더) */
+:root{
+  --bg0:#030014;
+  --cyan:#A78BFA;      /* 액센트: 라벤더 */
+  --cyan-l:#C4B5FD;    /* 밝은 라벤더 */
+  --blue:#818CF8;
+  --blue-d:#6366F1;
+}
+::selection{background:rgba(167,139,250,.35)}
+
+/* 2) 태양계 링/코어 완전 제거 (안전장치) */
+.rings{display:none!important}
+
+/* 3) 실제 블랙홀 영상 (상단 중앙, screen 블렌드로 검은 배경 제거) */
+.bh-video{position:absolute;left:50%;top:-38%;transform:translateX(-50%);
+  width:min(1300px,120vw);height:auto;z-index:0;pointer-events:none;
+  mix-blend-mode:screen;opacity:.96}
+@media(max-width:900px){.bh-video{width:160vw;top:-14%}}
+.hero-inner{padding-top:220px}
+/* 히어로 타이틀: 화이트 -> 라벤더 그라디언트 */
+.hero-title{background:linear-gradient(100deg,#fff 10%,#C4B5FD 58%,#A78BFA 100%)!important;
+  -webkit-background-clip:text!important;background-clip:text!important;
+  -webkit-text-fill-color:transparent!important;
+  filter:drop-shadow(0 0 40px rgba(167,139,250,.42))!important}
+.hero-sub{color:#C7CDE8}
+
+/* 4) 슬라이드 상세 패널 — 우주 유리 + 편한 가독성 (가장 중요) */
+.panel{background:#0b0722!important;
+  border-left:1px solid rgba(167,139,250,.22)!important;
+  box-shadow:-26px 0 74px rgba(0,0,0,.62)!important}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:220px;pointer-events:none;
+  background:radial-gradient(120% 100% at 80% 0%,rgba(139,92,246,.18),transparent 62%)}
+.panel-body{position:relative}
+.panel-body .p-label{color:#C4B5FD}
+.panel-body .p-label.gold{color:#FCD34D}
+.panel-body h3{color:#EFECFB;letter-spacing:-.01em}
+.panel-body h4{color:#E4E1F4}
+.panel-body .p-meta{color:#9A9FC2}
+.panel-body .p-text{color:#C3C8E0;line-height:1.8}     /* 편한 줄간격 */
+.panel-body li{color:#CBCFE6;line-height:1.62}
+.panel-body li::before{background:#A78BFA}
+.panel-body .p-hero{background:linear-gradient(135deg,#251a5e,#111041)!important}
+.panel-body .p-hero span{color:#C9CFEA}
+.metric{background:#150d38!important;border-color:rgba(167,139,250,.18)!important}
+.metric strong{color:#C4B5FD}
+.metric span{color:#9CA1C4}
+.close{background:#160f36!important;border-color:rgba(167,139,250,.32)!important;color:#B7BCDC}
+.close:hover{color:#C4B5FD!important;border-color:#A78BFA!important}
+.gh-btn{background:#6366F1}
+.gh-btn.ghost{color:#C4B5FD;border-color:rgba(167,139,250,.4)}
+.gh-btn.ghost:hover{border-color:#A78BFA}
+
+/* 5) 섹션 헤더/본문 텍스트 — 우주 톤 정돈 */
+.sec-desc{color:#9CA1C4}
+.about-text h3{color:#EDEBFA}
+.about-points li{color:#C3C8E0}
+.about-points b{color:#E4E1F4}
+.about-closing{color:#D6D9EC;border-left-color:#A78BFA}
+.about-closing em{color:#C4B5FD}
+.skill-card h4{color:#EDEBFA}
+.skill p{color:#C3C8E0}
+.col-label{color:#C4B5FD}
+
+
+/* ===== 별 구멍 수정: 별밭+블랙홀 동일 레이어(screen 합성) + 블랙홀 히어로 전용 ===== */
+#space{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:#030014}
+#starfield{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:0}
+.bh-video{z-index:1;opacity:0;transition:opacity .8s ease}
+body[data-page="0"] .bh-video{opacity:.96}
+
+
+/* ===== 사각형 테두리 제거: 영상 전체채움 + 블렌드제거 + 하단 마스크 페이드 ===== */
+.bh-video{
+  position:absolute!important;left:0!important;top:-35%!important;
+  width:100%!important;height:100%!important;object-fit:cover!important;object-position:center top!important;
+  mix-blend-mode:normal!important;   /* screen 제거 — 사각형 원인 */
+  transform:none!important;z-index:0!important;
+  opacity:0;transition:opacity 1s ease;
+  /* 하단을 서서히 투명하게 -> 배경/별과 자연스럽게 연결 (테두리 소멸) */
+  -webkit-mask:linear-gradient(180deg,#000 0%,#000 48%,rgba(0,0,0,.65) 66%,transparent 82%);
+  mask:linear-gradient(180deg,#000 0%,#000 48%,rgba(0,0,0,.65) 66%,transparent 82%);
+}
+body[data-page="0"] .bh-video{opacity:1}
+#starfield{z-index:1!important}   /* 별을 영상 위로 -> 영상이 별을 가리지 않음 */
+@media(max-width:900px){.bh-video{top:-16%!important}}
+
+
+/* ===== Skills 아이콘 그리드 (참고 스타일) ===== */
+.skill-cards{flex:1;min-width:0}
+.skill-groups{display:flex;flex-direction:column;gap:13px;width:100%}
+.skgroup{border:1px solid rgba(124,66,248,.34);border-radius:14px;
+  background:rgba(12,8,34,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:14px 22px;transition:border-color .3s,box-shadow .3s}
+.skgroup:hover{border-color:rgba(167,139,250,.6);box-shadow:0 10px 30px rgba(88,28,135,.28)}
+.skg-title{font-size:16px;font-weight:800;margin-bottom:11px;letter-spacing:.01em;
+  background:linear-gradient(90deg,#A78BFA,#7DD3FC);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;display:inline-block}
+.skg-icons{display:flex;flex-wrap:wrap;gap:15px 18px;align-items:flex-start}
+.sk{display:flex;flex-direction:column;align-items:center;gap:6px;width:54px;
+  transition:transform .3s var(--ease)}
+.sk:hover{transform:translateY(-5px) scale(1.09)}
+.sk img{width:37px;height:37px;object-fit:contain;
+  filter:drop-shadow(0 3px 12px rgba(139,92,246,.42))}
+.sk em{font-style:normal;font-size:10px;color:#ADB2D4;text-align:center;line-height:1.15;letter-spacing:.01em}
+.skg-more{margin-top:10px;font-size:11.5px;color:#7E84A8}
+
+
+/* ===== 추가 수정: 블랙홀 위로 / 스킬 넓게 퍼지게 ===== */
+/* 블랙홀을 더 위로 올려 아래(밝은 원반)만 보이게 */
+.bh-video{top:-52%!important}
+@media(max-width:900px){.bh-video{top:-24%!important}}
+
+/* 스킬: 좌측 치우침 -> 넓게 퍼뜨리기 */
+.skill-cards{flex:1.75!important}
+.cert-col{flex:1!important;min-width:330px!important}
+.skg-icons{justify-content:space-around!important;gap:16px 8px!important}
+.sk{width:62px}
+.sk img{width:40px;height:40px}
+
+
+/* ===== 블랙홀 상하반전(참고 rotate-180 방식) — 위에 붙이고 밝은 원반이 아래로 ===== */
+.bh-video{
+  transform:scaleY(-1)!important;      /* 상하반전 */
+  top:-25%!important;
+  /* 반전 후 화면 하단(=요소 상단)을 별로 살짝만 페이드 */
+  -webkit-mask:linear-gradient(180deg, transparent 3%, #000 22%, #000 100%)!important;
+  mask:linear-gradient(180deg, transparent 3%, #000 22%, #000 100%)!important;
+}
+@media(max-width:900px){.bh-video{top:-20%!important}}
+
+
+/* ===== 블랙홀 위치 화면비율 무관 고정: 가로폭(vw) 기준 ===== */
+.bh-video{
+  width:100vw!important; height:auto!important;
+  left:50%!important; right:auto!important; top:-31vw!important;
+  object-fit:fill!important;
+  transform:translateX(-50%) scaleY(-1)!important;   /* 중앙정렬 + 상하반전 */
+}
+@media(max-width:900px){ .bh-video{width:150vw!important; top:-34vw!important} }
+
+
+/* 스킬 그룹 한줄 설명 */
+.skg-desc{margin:-4px 0 12px;font-size:12.5px;color:#9BA0C2;line-height:1.4;letter-spacing:.01em}
+
+
+/* ===== 블랙홀 최종: 상단중앙 앵커 + 크기 상한 — 화면 크기/비율 무관 완전 고정 ===== */
+.bh-video{
+  left:50%!important; right:auto!important; top:0!important;
+  width:min(1500px,98vw)!important; height:auto!important; max-width:none!important;
+  transform:translate(-50%,-50%) scaleY(-1)!important;
+}
+@media(max-width:900px){
+  .bh-video{ width:150vw!important; transform:translate(-50%,-42%) scaleY(-1)!important; }
+}
+
+
+/* 패널 대표이미지: 이미지가 자리표시 글씨 위로 (이미지 없으면 글씨가 자리표시) */
+.panel-body .p-hero img{z-index:1}
+.panel-body .p-hero span{z-index:0}
+
+
+/* ============================================================
+   Kintaro 이식: 로더 + BlurReveal + 심플 이미지카드
+   ============================================================ */
+
+/* ---- 로딩 화면 ---- */
+#loader{position:fixed;inset:0;z-index:9999;background:#030014;display:grid;place-items:center;
+  transition:opacity .7s ease, visibility .7s}
+#loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.ldr{position:relative;width:120px;height:120px;display:grid;place-items:center}
+.ldr-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(167,139,250,.16);
+  border-top-color:#A78BFA;animation:ldrSpin .9s linear infinite;box-shadow:0 0 36px rgba(139,92,246,.45)}
+.ldr-mark{font-family:var(--mono);font-size:27px;font-weight:800;letter-spacing:1px;color:#F3F1FB}
+.ldr-mark i{color:#A78BFA;font-style:normal}
+.ldr-txt{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--mono);font-size:10px;letter-spacing:5px;color:#6B6F92;animation:ldrPulse 1.4s ease-in-out infinite}
+@keyframes ldrSpin{to{transform:rotate(360deg)}}
+@keyframes ldrPulse{50%{opacity:.4}}
+
+/* ---- BlurReveal ---- */
+.reveal{filter:blur(9px);transition:opacity .55s var(--ease),transform .55s var(--ease),filter .55s var(--ease)}
+.page.active .reveal{filter:blur(0)}
+
+/* ---- 심플 이미지카드 공통 (Projects .pcard / Contests .ccard) ---- */
+.card-row .card-item>.pcard,
+.card-row .card-item>.ccard{height:360px;max-width:none;display:flex;flex-direction:column;
+  justify-content:flex-end;overflow:hidden;isolation:isolate;cursor:pointer;
+  background:#0a0722;padding:0 0 20px}
+/* 이미지가 카드 전체 채움 + 호버 줌 */
+.pcard .thumb,.ccard .cthumb{position:absolute!important;inset:0!important;height:auto!important;z-index:0;border-radius:0}
+.pcard .thumb img,.ccard .cthumb img{opacity:.5;transition:transform .55s var(--ease),opacity .4s;filter:saturate(.92)}
+.pcard:hover .thumb img,.ccard:hover .cthumb img{transform:scale(1.07);opacity:.66}
+/* 하단 그라디언트(가독성) */
+.pcard .thumb::after,.ccard .cthumb::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,4,26,.28) 0%,rgba(6,4,26,.03) 34%,rgba(6,4,26,.93) 100%)}
+/* 거대 코드 워터마크 (프로젝트 AX/BX/…) */
+.pcard .thumb b{font-size:clamp(56px,6vw,92px);color:rgba(199,180,255,.16);text-shadow:none;
+  left:22px;top:8px;letter-spacing:-3px;line-height:1;z-index:2}
+/* 카드 안으로 들어온 카테고리 라벨(eyebrow) */
+.pcard>.card-topic,.ccard>.card-topic{position:relative;z-index:3;margin:0;padding:0 24px 7px;
+  font-size:11px;letter-spacing:.03em;color:#B9BEDC;display:flex;align-items:center;gap:7px;
+  background:none;border:none;width:auto;top:auto;left:auto}
+.pcard>.card-topic .topic-award,.ccard>.card-topic .topic-award{font-size:10.5px}
+/* 제목 */
+.pcard h4,.ccard h4{position:relative;z-index:3;color:#fff;padding:0 24px;margin:0;font-size:21px;line-height:1.25}
+/* 태그 */
+.pcard .tags,.ccard .tags{position:relative;z-index:3;padding:12px 24px 0!important;margin:0;min-height:0!important}
+/* 심플: 나머지 텍스트는 카드 면에서 숨김 (상세는 클릭 패널에) */
+.pcard>p,.pcard .role,.pcard .more,
+.ccard .corg,.ccard .cdesc,.ccard ul,.ccard .more{display:none!important}
+
+
+/* 카드 높이 강제 (특정성 회피) */
+.card-row .card-item>.pcard,
+.card-row.three .card-item>.ccard{height:360px!important}
+
+
+/* 카드 높이 진짜 수정: 부모(card-item)에 min-height, 카드는 채움 (flex-shrink 우회) */
+.card-row .card-item{min-height:360px}
+.card-row .card-item>.pcard,
+.card-row .card-item>.ccard{height:100%!important;flex-shrink:0}
+
+
+/* ---- About: 편집형 흐르는 문장 (불릿 제거) ---- */
+.about-lead{font-size:19px;line-height:1.85;color:#CBCFE8;max-width:620px;margin-bottom:36px}
+.about-lead b{color:#F0ECFB;font-weight:800}
+.about-lead em{font-style:italic;color:#C4B5FD;font-weight:600}
+
+
+/* ============================================================
+   생동감 패스: 매달린 프로필 + 카드 틸트/스포트라이트 + 마퀴 + 자석
+   ============================================================ */
+
+/* ---- 섹션 카운터 노출 (에디토리얼) ---- */
+.sec-num{display:block;font-family:var(--mono);font-size:11px;letter-spacing:4px;color:#7A7FA6;margin-bottom:8px}
+
+/* ---- About: 매달린 프로필 ---- */
+.photo-wrap{padding-top:54px}
+.pin{position:absolute;left:50%;top:0;width:14px;height:14px;margin-left:-7px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#E4E1F6,#8B8FB8 60%,#4A4E74);z-index:3;
+  box-shadow:0 0 10px rgba(196,181,253,.55)}
+.swing{position:relative;transform-origin:50% -47px;will-change:transform}
+.string{position:absolute;left:50%;top:-47px;width:1.5px;height:47px;margin-left:-1px;
+  background:linear-gradient(180deg,rgba(196,181,253,.75),rgba(196,181,253,.22))}
+.swing-tag{margin-top:14px;text-align:center;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:3px;color:#8A8FB4}
+.photo-glow{display:none}
+
+/* ---- 카드 커서 스포트라이트 ---- */
+.pcard::before,.ccard::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  opacity:0;transition:opacity .35s;
+  background:radial-gradient(circle 320px at var(--mx,50%) var(--my,50%),rgba(196,181,253,.16),transparent 62%)}
+.pcard:hover::before,.ccard:hover::before{opacity:1}
+.pcard,.ccard{transition:transform .5s var(--ease),border-color .3s,box-shadow .4s,background .3s;will-change:transform}
+
+/* ---- 수상 배지 글로우 펄스 ---- */
+.topic-award{animation:awardGlow 2.4s ease-in-out infinite}
+@keyframes awardGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(252,211,77,.25))}
+  50%{filter:drop-shadow(0 0 9px rgba(252,211,77,.75))}}
+
+/* ---- Contact: 아웃라인 마퀴 밴드 ---- */
+.marquee{overflow:hidden;width:100vw;margin:0 calc(50% - 50vw) 26px;pointer-events:none}
+.mq-track{display:flex;white-space:nowrap;animation:mqMove 22s linear infinite;width:max-content}
+.mq-track span{font-size:56px;font-weight:900;letter-spacing:2px;line-height:1.15;
+  color:transparent;-webkit-text-stroke:1.2px rgba(196,181,253,.34);text-stroke:1.2px rgba(196,181,253,.34)}
+@keyframes mqMove{to{transform:translateX(-50%)}}
+
+/* ---- Contact 카드/버튼 ---- */
+.link-card{transition:transform .45s var(--ease),border-color .3s,background .3s;will-change:transform}
+.mail-btn{animation:mailPulse 2.6s ease-in-out infinite}
+@keyframes mailPulse{0%,100%{box-shadow:0 0 0 0 rgba(99,102,241,.45)}
+  55%{box-shadow:0 0 0 12px rgba(99,102,241,0)}}
+
+/* ---- 패널 자료 버튼: 호버 화살표 ---- */
+.file-btn{position:relative;overflow:hidden}
+.file-btn::after{content:'→';position:absolute;right:16px;top:50%;transform:translate(10px,-50%);
+  opacity:0;transition:opacity .3s,transform .3s;color:#C4B5FD;font-weight:700}
+.file-btn:hover::after{opacity:1;transform:translate(0,-50%)}
+.file-btn:hover{border-color:#A78BFA!important}
+
+
+
+
+/* About 매달림: 높이 보정 (사진 잘림 방지) */
+.photo-wrap{padding-top:44px}
+.swing{
+  transform-origin:50% -40px;
+  backface-visibility:hidden;
+  transform-style:preserve-3d;
+  transition:transform .18s cubic-bezier(.22,.61,.36,1)}
+/* 마우스를 뗐을 때 튕기지 않고 천천히 원위치로 복귀 */
+.photo-wrap:not(:hover) .swing{
+  transition-duration:.65s;
+  transition-timing-function:cubic-bezier(.16,1,.3,1)}
+.string{top:-40px;height:40px}
+.photo-frame{
+  width:290px;height:360px;
+  transition:border-color .35s ease,box-shadow .45s ease}
+.photo-wrap:hover .photo-frame{
+  border-color:rgba(196,181,253,.48);
+  box-shadow:0 18px 42px rgba(25,15,58,.34)}
+.swing-tag{margin-top:10px}
+
+@media (prefers-reduced-motion:reduce){
+  /* 마우스를 따라 흔들리는 프로필은 유지한다(정체성). 스프링 지연만 제거. */
+  .swing{transition:none!important}
+}
+
+
+/* 카드 이미지 가독성: 원본 이미지는 선명하게, 텍스트 영역은 그라디언트로 보호 */
+.pcard .thumb img,.ccard .cthumb img{
+  filter:saturate(.9) brightness(1.05) contrast(1.02)!important;opacity:.84!important}
+.pcard:hover .thumb img,.ccard:hover .cthumb img{
+  filter:saturate(1) brightness(1.12) contrast(1.02)!important;opacity:.92!important;transform:scale(1.1)}
+/* 상단 이미지는 밝게 유지하고, 글자가 놓이는 하단만 어둡게 */
+.pcard .thumb::after,.ccard .cthumb::after{
+  background:linear-gradient(180deg,
+    rgba(8,5,26,.05) 0%,
+    rgba(8,5,26,.06) 20%,
+    rgba(8,5,26,.5) 34%,
+    rgba(8,5,26,.75) 50%,
+    rgba(8,5,26,.93) 100%)!important}
+
+
+/* ============================================================
+   P0 수정: 모바일 패널 / 카드 클릭단서 / 카드 정보복원 / 접근성
+   ============================================================ */
+
+/* P0-1: 모바일 상세 패널 화면밖 잘림 수정 */
+@media (max-width:768px){
+  .panel{width:100vw!important;min-width:0!important}
+  .panel-body{padding:16px 22px 60px!important}
+  .panel-body h3{font-size:26px!important}
+  .close{margin-left:calc(100% - 60px)!important}
+}
+
+/* P0-2: 카드가 클릭 가능하다는 단서 (상시 노출 힌트) */
+.pcard .more,.ccard .more{display:flex!important;align-items:center;gap:6px;
+  position:relative;z-index:3;width:max-content;margin:12px 22px 0;padding:7px 14px;
+  border-radius:999px;background:rgba(167,139,250,.14);border:1px solid rgba(167,139,250,.35);
+  color:#D6CCFB;font-size:12px;font-weight:600;letter-spacing:.02em;
+  transition:background .3s,border-color .3s,transform .3s}
+.pcard:hover .more,.ccard:hover .more{background:rgba(167,139,250,.26);border-color:#A78BFA;transform:translateX(3px)}
+
+/* P0-3: 카드 정보 공백 -> 한 줄 요약 복원 (심플 유지) */
+.pcard>p{display:-webkit-box!important;-webkit-line-clamp:1;-webkit-box-orient:vertical;
+  overflow:hidden;position:relative;z-index:3;color:#B7BCDC;font-size:12.5px;
+  padding:6px 22px 0!important;margin:0!important;height:auto!important;line-height:1.4}
+.ccard .cdesc{display:-webkit-box!important;-webkit-line-clamp:1;-webkit-box-orient:vertical;
+  overflow:hidden;position:relative;z-index:3;color:#B7BCDC;font-size:12.5px;
+  padding:6px 24px 0!important;margin:0!important;height:auto!important;line-height:1.4}
+
+/* P0-접근성: 키보드 포커스 표시 */
+[data-panel]:focus-visible{outline:2px solid #C4B5FD;outline-offset:3px;border-radius:16px}
+.link-card:focus-visible,.mail-btn:focus-visible,.file-btn:focus-visible,
+.dot:focus-visible,.hero-card:focus-visible{outline:2px solid #C4B5FD;outline-offset:3px}
+
+
+/* ============================================================
+   UX 패스: 정체성·위계·내비·리듬 (미학 유지)
+   ============================================================ */
+
+/* ---- 상단 내비: 스크롤스파이 + 언더라인 ---- */
+.topbar{padding:26px 56px}
+.logo i{color:#A78BFA;font-style:normal}
+.menu{display:flex;gap:30px;pointer-events:auto;align-items:center}
+.menu a{position:relative;font-family:var(--mono);font-size:11.5px;letter-spacing:1.6px;
+  color:#8A8FB4;cursor:pointer;padding:6px 0;transition:color .3s}
+.menu a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1.5px;border-radius:1px;
+  background:linear-gradient(90deg,#A78BFA,#7DD3FC);transform:scaleX(0);transform-origin:left;
+  transition:transform .38s cubic-bezier(.65,0,.35,1)}
+.menu a:hover{color:#E6E3F7}
+.menu a:hover::after{transform:scaleX(1)}
+.menu a.active{color:#fff}
+.menu a.active::after{transform:scaleX(1)}
+@media(max-width:900px){.menu{display:none}}
+
+/* ---- Hero 위계: eyebrow → title → sub → stats → CTA ---- */
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:5px;color:#9096B8;
+  margin-bottom:16px}
+.hero-title{margin-bottom:14px!important}
+.hero-sub{font-size:17px!important;color:#C3C8E0!important;letter-spacing:0!important;
+  font-weight:500!important;margin-bottom:26px!important}
+.hero-stats{display:flex;gap:30px;flex-wrap:wrap;margin-bottom:32px}
+.hero-stats span{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:#8A8FB4;
+  letter-spacing:.02em}
+.hero-stats b{font-size:21px;font-weight:800;color:#E9E6F8;letter-spacing:-.01em}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.cta{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:12px;
+  font-size:13.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;
+  border:1px solid rgba(167,139,250,.28);background:rgba(255,255,255,.045);color:#D9D6EE;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .32s var(--ease),background .32s,border-color .32s,box-shadow .32s}
+.cta:hover{transform:translateY(-3px);border-color:rgba(167,139,250,.62);
+  background:rgba(167,139,250,.13);box-shadow:0 12px 30px rgba(88,28,135,.34)}
+.cta.primary{background:linear-gradient(135deg,#6D28D9,#4F46E5);border-color:transparent;color:#fff}
+.cta.primary:hover{box-shadow:0 14px 36px rgba(99,102,241,.5)}
+.cta i{font-style:normal;transition:transform .32s var(--ease)}
+.cta:hover i{transform:translateX(4px)}
+
+/* ---- About 스탯 카드 (숫자 먼저) ---- */
+.about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 24px}
+.stat{padding:15px 16px;border-radius:13px;border:1px solid rgba(167,139,250,.2);
+  background:rgba(12,8,34,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:transform .35s var(--ease),border-color .35s}
+.stat:hover{transform:translateY(-4px);border-color:rgba(167,139,250,.5)}
+.stat b{display:block;font-size:25px;font-weight:800;color:#C4B5FD;letter-spacing:-.02em;
+  line-height:1.1;margin-bottom:5px}
+.stat span{font-size:11px;color:#9096B8;line-height:1.35;display:block}
+@media(max-width:1100px){.about-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* ---- 섹션별 애니메이션 리듬 ---- */
+/* Hero: 임팩트 (크게 올라오며 살짝 스케일) */
+.page.hero .reveal{transform:translateY(38px) scale(.985)}
+.page.hero.active .reveal{transform:none;transition-duration:.6s}
+/* About: 소프트 (짧고 부드럽게) */
+.page.about .reveal{transform:translateY(16px);filter:blur(6px)}
+.page.about.active .reveal{transform:none;filter:blur(0);transition-duration:.62s;transition-timing-function:cubic-bezier(.22,1,.36,1)}
+/* Projects·Contests: 다이내믹 (좌우 교차 + 스태거 강화) */
+.page.projects.active .card-item.reveal,
+.page.contest.active .card-item.reveal{transition-duration:.5s;
+  transition-timing-function:cubic-bezier(.16,1,.3,1)}
+.page.projects.active .card-item.reveal:nth-child(1){transition-delay:.02s}
+.page.projects.active .card-item.reveal:nth-child(2){transition-delay:.07s}
+.page.projects.active .card-item.reveal:nth-child(3){transition-delay:.12s}
+.page.projects.active .card-item.reveal:nth-child(4){transition-delay:.17s}
+/* Timeline: 스무스 (길고 완만) */
+.page.timeline.active .tl-item{transition-duration:.6s;
+  transition-timing-function:cubic-bezier(.25,.8,.3,1)}
+/* Contact: 미니멀 페이드 (이동 없이 투명도만) */
+.page.contact .reveal{transform:none;filter:blur(4px)}
+.page.contact.active .reveal{transform:none;filter:blur(0);transition-duration:.55s}
+
+/* ---- 타이포 위계 강화 ---- */
+.section-head h2,.contact-inner h2{letter-spacing:-.025em;line-height:1.06}
+.sec-desc{font-size:15px;letter-spacing:.01em}
+.card-item>.pcard h4,.card-item>.ccard h4{letter-spacing:-.015em}
+
+/* ---- 모바일: Hero 위계 축소 ---- */
+@media(max-width:768px){
+  .topbar{padding:20px 22px}
+  .hero-stats{gap:18px;margin-bottom:24px}
+  .hero-stats b{font-size:18px}
+  .cta{padding:11px 18px;font-size:12.5px}
+  .about-stats{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* 상단 내비 가독성: 은은한 스크림 (블랙홀 위에서도 읽히게) */
+.topbar::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg,rgba(3,0,20,.72),rgba(3,0,20,.28) 55%,transparent);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.menu a{text-shadow:0 1px 8px rgba(3,0,20,.75)}
+/* About: 내용 늘어난 만큼 여백 최적화 */
+.about-text h3{font-size:29px;margin-bottom:22px}
+.about-lead{font-size:15px;line-height:1.75}
+.about-stats{margin:22px 0 20px}
+.about-closing{font-size:19px;padding-left:20px}
+
+
+/* ---- 패널 섹션 위계 강화 (스캔 가능·카드형) — brief #5 ---- */
+.panel-body h4{position:relative;margin:36px 0 15px;padding-left:15px;font-size:12.5px;
+  letter-spacing:.05em;color:#B4B9D8;font-weight:700}
+.panel-body h4::before{content:'';position:absolute;left:0;top:1px;bottom:1px;width:3px;border-radius:2px;
+  background:linear-gradient(180deg,#A78BFA,#7DD3FC)}
+.panel-body ul{gap:9px!important}
+.panel-body li{padding:13px 16px 13px 34px!important;border-radius:11px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(167,139,250,.13);line-height:1.6!important}
+.panel-body li::before{left:15px!important;top:20px!important}
+.panel-body .p-text{padding:2px 2px 0;line-height:1.85}
+.panel-body .metrics{margin-top:14px}
+.panel-body .p-honest{margin-top:18px}
+
+
+/* ============================================================
+   반복2: Hero 로테이션 · Timeline 글로우 · Contact 엔딩
+   ============================================================ */
+
+/* ---- Hero 키워드 로테이션 (페이드+슬라이드, 타이핑 없음) ---- */
+#heroRotate{display:inline-block;will-change:transform,opacity;
+  transition:opacity .5s ease, transform .55s cubic-bezier(.22,1,.36,1)}
+#heroRotate.out{opacity:0;transform:translateY(-12px)}
+.hero-sub{min-height:1.5em}
+
+/* ---- Timeline: 발광 라인 + 노드/카드 호버 ---- */
+.tl-line{background:rgba(124,105,190,.16)}
+.tl-line span{box-shadow:0 0 10px rgba(167,139,250,.55),0 0 22px rgba(124,58,237,.28);
+  background:linear-gradient(180deg,#A78BFA,#7DD3FC)}
+.tl-item::before{background:#6E62A8;box-shadow:0 0 0 0 rgba(167,139,250,.5);
+  transition:transform .4s var(--ease),box-shadow .4s,background .35s;transform-origin:center}
+.tl-item:hover::before{background:#C4B5FD;transform:scale(1.55);
+  box-shadow:0 0 16px 4px rgba(167,139,250,.75)}
+.tl-item.hl::before{background:#C4B5FD;box-shadow:0 0 16px 3px rgba(167,139,250,.7)}
+.tl-card{background:rgba(12,8,34,.82);border-color:rgba(124,105,190,.2);
+  transition:transform .42s var(--ease),border-color .35s,box-shadow .38s}
+.tl-card:hover{transform:translateY(-5px);border-color:rgba(167,139,250,.6);
+  box-shadow:0 14px 34px rgba(88,28,135,.34)}
+.tl-item.hl .tl-card{border-color:rgba(167,139,250,.42)}
+/* 스크롤 리빌 강화: 노드가 라인을 타고 팝 */
+.page.timeline.active .tl-item::before{animation:tlPop .45s var(--ease) both}
+.page.timeline.active .tl-item:nth-child(2)::before{animation-delay:.07s}
+.page.timeline.active .tl-item:nth-child(3)::before{animation-delay:.14s}
+.page.timeline.active .tl-item:nth-child(4)::before{animation-delay:.21s}
+.page.timeline.active .tl-item:nth-child(5)::before{animation-delay:.28s}
+.page.timeline.active .tl-item:nth-child(6)::before{animation-delay:.35s}
+@keyframes tlPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+
+/* ---- Contact 엔딩: 미션 톤 + 마퀴 보라 ---- */
+.mq-track span{-webkit-text-stroke-color:rgba(167,139,250,.32);text-stroke-color:rgba(167,139,250,.32)}
+.contact .sec-num{color:#9A8FCF}
+
+
+/* ============================================================
+   프로젝트 카드: "행성 진입 전 첫 걸음" 프리미엄 인터랙션
+   ============================================================ */
+.card-item>.pcard,.card-item>.ccard{
+  transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .55s ease,border-color .4s}
+/* 호버 헤일로: 보라 발광 링 + 부양감 */
+.card-item>.pcard:hover,.card-item>.ccard:hover{
+  border-color:rgba(167,139,250,.55)!important;
+  box-shadow:0 30px 66px rgba(88,28,135,.5),0 0 0 1px rgba(167,139,250,.4),
+             0 0 46px rgba(139,92,246,.3)!important}
+/* 이미지 줌 심화 (밝기를 유지하며 행성으로 빨려드는 느낌) */
+.pcard:hover .thumb img,.ccard:hover .cthumb img{
+  transform:scale(1.1)!important;
+  filter:saturate(1) brightness(1.12) contrast(1.02)!important;
+  opacity:.92!important}
+/* 상단 진입 큐: 호버 시 "ENTER" 배지 페이드인 */
+.card-item>.pcard::after,.card-item>.ccard::after{content:'ENTER →';position:absolute;
+  top:16px;right:18px;z-index:4;font-family:var(--mono);font-size:10px;letter-spacing:2px;
+  font-weight:700;color:#C4B5FD;padding:5px 10px;border-radius:999px;
+  background:rgba(167,139,250,.14);border:1px solid rgba(167,139,250,.4);
+  opacity:0;transform:translateY(-6px);transition:opacity .4s,transform .4s;pointer-events:none}
+.card-item>.pcard:hover::after,.card-item>.ccard:hover::after{opacity:1;transform:translateY(0)}
+/* "자세히 보기" 큐도 진입감 강화 */
+.pcard:hover .more,.ccard:hover .more{background:rgba(167,139,250,.3)!important;
+  border-color:#A78BFA!important;transform:translateX(5px)!important;
+  box-shadow:0 0 18px rgba(139,92,246,.4)}
+
+
+/* ============================================================
+   반복3: 카드 가독성/표면 분리 + 프로젝트 타입 배지 + Projects 공간감
+   ============================================================ */
+
+/* ---- Hero: 정체성 위계 (AI Product Builder) ---- */
+.hero-title{letter-spacing:-.02em}
+.hero-support{font-family:var(--mono);font-size:13px;letter-spacing:3px;color:#B9BEDC;
+  margin:2px 0 12px;text-transform:uppercase}
+.hero-sub{font-size:15px!important;color:#9EA3C6!important;font-weight:500!important}
+#heroRotate{color:#C4B5FD}
+
+/* ---- 카드 표면: 반투명 라이트 서피스 + 보더 가시성 (플랫 블랙 X) ---- */
+.card-item > .pcard,
+.card-item > .ccard {
+  background: linear-gradient(
+    145deg,
+    rgba(54, 45, 96, 0.72),
+    rgba(24, 18, 55, 0.86)
+  ) !important;
+
+  border: 1px solid rgba(190, 174, 255, 0.42) !important;
+
+  box-shadow:
+    0 14px 38px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+}
+/* 은은한 보라 앰비언트 글로우 (기본 상태에도 미세하게) */
+.card-item>.pcard::before,.card-item>.ccard::before{opacity:.35}
+
+/* ---- 텍스트 가독성: 더 밝은 흰색 + 그림자 ---- */
+.card-item>.pcard h4,.card-item>.ccard h4{color:#F4F2FE!important;
+  text-shadow:0 2px 10px rgba(0,0,0,.55)}
+.pcard>p,.ccard .cdesc{color:#C9CDE6!important;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.card-item>.card-topic{color:#CBD0EC!important}
+
+/* ---- 배지 가시성 강화: 카테고리·태그·타입 ---- */
+.card-item .tags i{color:#CBD8FF!important;background:rgba(99,102,241,.2);
+  border:1px solid rgba(129,140,248,.42);padding:4px 11px;border-radius:999px;font-size:11px}
+.ptype{font-style:normal;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:1.5px;
+  padding:3px 8px;border-radius:6px;margin-right:9px;vertical-align:middle}
+.ptype.team{color:#93C5FD;background:rgba(59,130,246,.2);border:1px solid rgba(96,165,250,.5)}
+.ptype.contest{color:#C4B5FD;background:rgba(139,92,246,.2);border:1px solid rgba(167,139,250,.5)}
+.ptype.award{color:#FCD34D;background:rgba(245,158,11,.16);border:1px solid rgba(252,211,77,.5)}
+
+/* ---- 호버: 밝기 상승 + 오비탈 글로우(궤도 링) ---- */
+.card-item>.pcard:hover,.card-item>.ccard:hover{
+  background:linear-gradient(145deg,rgba(67,55,116,.78),rgba(30,22,68,.9))!important;
+  border-color:rgba(190,174,255,.75)!important}
+.card-item>.pcard:hover::before,.card-item>.ccard:hover::before{opacity:1}
+
+/* ---- Projects·Contests 섹션 공간감: 성운 + 원거리 행성 실루엣 (풀 행성 X) ---- */
+.projects::after,.contest::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(closest-side at 82% 20%,rgba(124,58,237,.16),transparent 70%),
+    radial-gradient(closest-side at 12% 78%,rgba(56,90,200,.12),transparent 72%),
+    radial-gradient(38px 38px at 88% 30%,rgba(160,140,255,.10),transparent 70%),
+    radial-gradient(120px 120px at 8% 68%,rgba(90,70,180,.09),transparent 72%)}
+.projects .card-row,.contest .card-row{position:relative;z-index:2}
+.projects .section-head,.contest .section-head{position:relative;z-index:2}
+
+
+/* 카드 중간 텍스트 가독성 세이프가드 (밝은 썸네일 위에서도 읽히게, 밝기 불변) */
+.card-item>.card-topic{text-shadow:0 1px 6px rgba(0,0,0,.82),0 0 3px rgba(0,0,0,.6)!important}
+.card-item .ptype,.card-item .topic-award{text-shadow:none}
+.card-item>.card-topic{background:linear-gradient(180deg,rgba(8,5,26,.0),rgba(8,5,26,.0))}
+
+
+/* ============================================================
+   WebGL 폴백: Three.js 별밭을 못 쓸 때의 우주 배경
+   (JS가 #space에 .no-webgl 을 붙일 때만 적용 → WebGL 정상 동작 시 영향 0)
+   별 2겹에만 아주 느린 표류를 준다. transform/opacity 만 사용하고,
+   대상은 뷰포트 크기의 가상 요소 2개뿐이라 #fullpage 같은 거대 레이어를
+   만들지 않는다. will-change 는 쓰지 않는다.
+   ============================================================ */
+#space.no-webgl{
+  background:
+    radial-gradient(1200px 720px at 78% 10%, rgba(88,52,168,.30), transparent 62%),
+    radial-gradient(980px 640px at 10% 84%, rgba(46,38,120,.26), transparent 66%),
+    radial-gradient(760px 520px at 46% 44%, rgba(120,70,200,.13), transparent 70%),
+    #030014;
+}
+/* 별 2겹 (타일링 도트 패턴).
+   inset 을 -40px 로 넉넉히 잡아 표류해도 가장자리가 드러나지 않게 한다
+   (#space 가 overflow:hidden 이라 넘치는 부분은 잘린다). */
+#space.no-webgl::before,
+#space.no-webgl::after{
+  content:'';position:absolute;inset:-40px;pointer-events:none;background-repeat:repeat}
+#space.no-webgl::before{
+  background-image:
+    radial-gradient(1.5px 1.5px at 18% 24%, rgba(255,255,255,.85), transparent 60%),
+    radial-gradient(1.3px 1.3px at 62% 11%, rgba(214,222,255,.75), transparent 60%),
+    radial-gradient(1.2px 1.2px at 86% 38%, rgba(255,255,255,.68), transparent 60%),
+    radial-gradient(1.6px 1.6px at 34% 62%, rgba(226,214,255,.78), transparent 60%),
+    radial-gradient(1.1px 1.1px at 72% 78%, rgba(255,255,255,.62), transparent 60%),
+    radial-gradient(1.4px 1.4px at 8% 52%,  rgba(210,220,255,.70), transparent 60%),
+    radial-gradient(1.2px 1.2px at 48% 88%, rgba(255,255,255,.60), transparent 60%),
+    radial-gradient(1.5px 1.5px at 94% 84%, rgba(226,214,255,.66), transparent 60%),
+    radial-gradient(1.1px 1.1px at 26% 6%,  rgba(255,255,255,.58), transparent 60%);
+  background-size:260px 260px;
+  opacity:.9;
+  animation:fbStarNear 30s ease-in-out infinite}
+#space.no-webgl::after{
+  background-image:
+    radial-gradient(1px 1px at 44% 18%, rgba(255,255,255,.60), transparent 60%),
+    radial-gradient(1px 1px at 12% 72%, rgba(196,181,253,.58), transparent 60%),
+    radial-gradient(1px 1px at 92% 62%, rgba(255,255,255,.52), transparent 60%),
+    radial-gradient(1px 1px at 66% 44%, rgba(214,222,255,.55), transparent 60%),
+    radial-gradient(1px 1px at 30% 36%, rgba(255,255,255,.46), transparent 60%),
+    radial-gradient(1px 1px at 78% 8%,  rgba(226,214,255,.48), transparent 60%),
+    radial-gradient(1px 1px at 54% 68%, rgba(255,255,255,.44), transparent 60%);
+  background-size:150px 150px;
+  opacity:.7;
+  animation:fbStarFar 48s ease-in-out infinite}
+
+/* 앞쪽 별: 크게·빠르게 (30s, 최대 16x12px) — 3~5초 안에 움직임이 인지된다 */
+@keyframes fbStarNear{
+  0%   {transform:translate3d(0,0,0);      opacity:.9}
+  50%  {transform:translate3d(-16px,-12px,0);opacity:.80}
+  100% {transform:translate3d(0,0,0);      opacity:.9}}
+/* 뒤쪽 별: 작게·느리게 (48s, 최대 9x7px) — 앞쪽의 약 1/2.8 속도로 깊이감 */
+@keyframes fbStarFar{
+  0%   {transform:translate3d(0,0,0);     opacity:.7}
+  50%  {transform:translate3d(9px,-7px,0);opacity:.62}
+  100% {transform:translate3d(0,0,0);     opacity:.7}}
+
+
+/* ============================================================
+   모션 최소화 설정: 풀페이지 슬라이드와 리빌을 즉시 확정시킨다.
+   (콘텐츠는 그대로 보이되 이동/블러/스태거만 제거 — 내용 변화 없음)
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  #fullpage{transition:none!important}
+  /* 슬라이드는 JS(goTo)가 reduce 여부를 보고 아예 걸지 않지만,
+     방어적으로 한 번 더 막아둔다. */
+  .page{transition:none!important;transform:none!important}
+  .reveal{
+    transition:none!important;
+    transition-delay:0s!important;
+    filter:none!important;
+    transform:none!important;
+    opacity:1!important}
+  .page.active .reveal{filter:none!important;transform:none!important;opacity:1!important}
+  .page.active .tl-item{transition:none!important;transition-delay:0s!important}
+  .page.timeline.active .tl-item::before{animation:none!important}
+  .page.active .tl-line span{transition:none!important}
+  .page.active .track span{transition:none!important}
+  /* 폴백 별도 멈추지 않는다 — 지속시간만 늘려 아주 느리게 */
+  #space.no-webgl::before{animation-duration:150s!important}
+  #space.no-webgl::after{animation-duration:240s!important}
+}
+
+
+/* ============================================================
+   좁은 화면(≤900px) Projects·Contests: 가로 스와이프 카드 행
+   데스크톱(≥901px)은 전혀 건드리지 않는다.
+
+   기존 문제: .card-row .card-item{flex:1 1 0;min-width:0} 이라
+   카드가 무한정 줄어들어 390px에서 52px까지 축소됐고, 제목이 한 글자씩
+   끊기며 4번째 카드는 .page의 overflow:hidden 에 잘려 보이지 않았다.
+   (가로 스크롤이 아니라 '클리핑'이라 스크롤폭 검사로는 잡히지 않았다)
+   ============================================================ */
+@media (max-width:900px){
+  /* .page 좌우 패딩 밖으로 풀블리드 → 행 자체가 스크롤 컨테이너가 된다.
+     (Contact의 .marquee 가 쓰는 것과 같은 기법) */
+  .projects .card-row,
+  .contest  .card-row{
+    width:100vw;
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+    padding:16px 22px 20px 68px;     /* 상단=hover translateY(-10px) 여유, 좌측=.dotnav(44~53px) 회피 */
+    gap:14px;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    overscroll-behavior-x:contain;   /* 가로 스크롤이 페이지로 새지 않게 */
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x mandatory;
+    scroll-padding-left:68px;
+    scrollbar-width:none;            /* Firefox */
+    -ms-overflow-style:none;         /* 레거시 Edge */
+  }
+  /* 스크롤바는 숨기되 터치·트랙패드·휠 스크롤은 그대로 동작 */
+  .projects .card-row::-webkit-scrollbar,
+  .contest  .card-row::-webkit-scrollbar{width:0;height:0;display:none}
+
+  /* 카드는 줄어들지 않는 고정 폭 (.card-row .card-item{flex:1 1 0} 무력화) */
+  .projects .card-row .card-item,
+  .contest  .card-row .card-item{
+    flex:0 0 auto;
+    width:264px;                     /* 태블릿 */
+    max-width:none;
+    scroll-snap-align:start;
+  }
+
+  /* 가로 스크롤러 안에서 좌우 슬라이드 리빌은 scrollWidth 를 늘려
+     스냅을 흔들기 때문에, 같은 리빌을 세로 방향으로만 준다. */
+  .card-row .card-item.reveal:nth-child(odd),
+  .card-row .card-item.reveal:nth-child(even){transform:translateY(16px)}
+  .page.active .card-row .card-item.reveal{transform:none}
+}
+
+/* 모바일: 다음 카드가 확실히 보이도록 뷰포트 기준 폭 */
+@media (max-width:600px){
+  .projects .card-row .card-item,
+  .contest  .card-row .card-item{width:min(76vw,272px)}
+}
+
+
+/* ============================================================
+   Space Journey — 추가 레이어 (기존 별밭·블랙홀 위에 얹는 반투명 캔버스)
+   - #starfield 는 z-index:1!important 로 영상 위에 있다. journey 는 그 위,
+     본문(#fullpage z-index:1 / .page 내용) 아래에 놓아 별이 계속 비쳐 보인다.
+   - Hero(body[data-page="0"])에서는 opacity:0 → 시각적 영향 완전 0.
+   - will-change 를 쓰지 않는다 (특히 #fullpage 에는 절대 적용하지 않음).
+   ============================================================ */
+#journey{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:2; pointer-events:none; display:block;
+  opacity:0; transition:opacity .7s ease}
+body:not([data-page="0"]) #journey{opacity:1}
+
+/* ---- 목적지 컨트롤 (Projects/Contests 에서만 노출) ---- */
+#journeyCtl{
+  position:fixed; right:26px; bottom:24px; z-index:60;
+  display:none; align-items:center; gap:8px;
+  padding:8px 10px; border-radius:999px;
+  background:rgba(14,10,38,.62); border:1px solid rgba(167,139,250,.30);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+body[data-page="3"] #journeyCtl,
+body[data-page="4"] #journeyCtl{display:flex}
+#journeyLabel{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:2px;
+  color:#B9BEDC; padding:0 6px; min-width:112px; text-align:center}
+#journeyCtl button{
+  width:30px; height:30px; border-radius:50%; cursor:pointer;
+  background:rgba(167,139,250,.14); border:1px solid rgba(167,139,250,.34);
+  color:#E4DDFB; font-size:15px; line-height:1;
+  transition:background .25s, border-color .25s, transform .25s}
+#journeyCtl button[data-j="back"]{
+  width:auto; padding:0 12px; border-radius:999px;
+  font-family:var(--mono); font-size:10px; letter-spacing:1.5px}
+#journeyCtl button:hover{background:rgba(167,139,250,.30); border-color:#A78BFA}
+#journeyCtl button:focus-visible{outline:2px solid #C4B5FD; outline-offset:3px}
+#journeyCtl[data-active="0"] button[data-j="back"]{opacity:.42; pointer-events:none}
+
+/* 태블릿: 장식 축소 */
+@media (max-width:1024px){
+  #journeyCtl{right:18px; bottom:18px}
+  #journeyLabel{min-width:92px; font-size:10px}
+}
+/* 모바일: 캔버스는 은은하게만, 카드 스와이프가 주인공 */
+@media (max-width:640px){
+  body:not([data-page="0"]) #journey{opacity:.62}
+  #journeyCtl{right:12px; bottom:12px; padding:6px 8px}
+  #journeyLabel{display:none}
+}
+
+/* 모션 최소화: 캔버스는 계속 보이되(단계 확인 가능) 움직임은 JS에서 정지 */
+@media (prefers-reduced-motion:reduce){
+  #journey{transition:none}
+  #journeyCtl button{transition:none}
+}
+
+
+/* 3D 행성 레이어 — 2D journey 캔버스 바로 아래에 깔린다.
+   본체는 three.js 실제 구체(조명·터미네이터 계산), 그 위 2D 캔버스가
+   블랙홀 어휘(블룸·광자링·강착입자)를 얹는다. WebGL 없으면 표시 안 됨. */
+#journey3d{
+  position:absolute; inset:0; width:100%; height:100%;
+  z-index:1; pointer-events:none; display:block;
+  opacity:0; transition:opacity .7s ease}
+body:not([data-page="0"]) #journey3d{opacity:1}
+@media (max-width:640px){ body:not([data-page="0"]) #journey3d{opacity:.62} }
+@media (prefers-reduced-motion:reduce){ #journey3d{transition:none} }

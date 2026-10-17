@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>박진 — AI Product Builder Portfolio</title>
+<meta name="description" content="박진 — AI Product Builder. 데이터로 근거를 만들고 코드로 배포합니다. LG DX School 5기 수상 3회, 공모전 다수. FastAPI·데이터 분석·QGIS 공간분석.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="박진 — AI Product Builder Portfolio">
+<meta property="og:description" content="AI Product Builder — 데이터로 근거를 만들고 코드로 배포합니다. LG DX School 수상 3회 · 공모전 다수 · FastAPI/데이터 분석.">
+<meta property="og:image" content="https://parkjin0821-portfolio.netlify.app/assets/og-image.png">
+<meta property="og:url" content="https://parkjin0821-portfolio.netlify.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="박진 — AI Product Builder Portfolio">
+<meta name="twitter:description" content="AI Product Builder — 데이터로 근거를 만들고 코드로 배포합니다. LG DX School 수상 3회 · 공모전 다수.">
+<meta name="twitter:image" content="https://parkjin0821-portfolio.netlify.app/assets/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=67">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+<div id="loader" aria-hidden="true"><div class="ldr"><span class="ldr-ring"></span><span class="ldr-mark">PJ<i>.</i></span><span class="ldr-txt">PORTFOLIO</span></div></div>
+<div id="space" data-scene="galaxy" aria-hidden="true">
+  <video class="bh-video" id="bhVideo" autoplay muted loop playsinline>
+    <source src="assets/blackhole.webm" type="video/webm">
+  </video>
+  <canvas id="starfield"></canvas>
+  <canvas id="journey3d" aria-hidden="true"></canvas>
+  <canvas id="journey" aria-hidden="true"></canvas>
+</div>
+
+<!-- ===== 고정 UI ===== -->
+<header class="topbar">
+  <button class="logo" data-goto="0">PJ<i>.</i></button>
+  <nav class="menu" aria-label="주요 섹션">
+    <a data-goto="0">HOME</a>
+    <a data-goto="1">ABOUT</a>
+    <a data-goto="2">SKILLS</a>
+    <a data-goto="3">PROJECTS</a>
+    <a data-goto="4">CONTESTS</a>
+    <a data-goto="5">TIMELINE</a>
+    <a data-goto="6">CONTACT</a>
+  </nav>
+</header>
+
+<nav class="dotnav" aria-label="페이지 네비게이션">
+  <button data-goto="0" class="dot active" title="Home"></button>
+  <button data-goto="1" class="dot" title="About"></button>
+  <button data-goto="2" class="dot" title="Skills"></button>
+  <button data-goto="3" class="dot" title="Projects"></button>
+  <button data-goto="4" class="dot" title="Contest"></button>
+  <button data-goto="5" class="dot" title="Timeline"></button>
+  <button data-goto="6" class="dot" title="Contact"></button>
+</nav>
+
+<div id="journeyCtl" data-active="0">
+  <span id="journeyLabel">SYSTEM VIEW</span>
+  <button type="button" data-j="prev" aria-label="이전 목적지">‹</button>
+  <button type="button" data-j="next" aria-label="다음 목적지">›</button>
+  <button type="button" data-j="back" aria-label="시스템 뷰로 돌아가기">BACK</button>
+</div>
+
+<!-- ===== 풀페이지 컨테이너 ===== -->
+<main id="fullpage">
+
+  <!-- 01 HERO -->
+  <section class="page hero" id="home">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">PARK JIN · 박진</p>
+      <h1 class="hero-title" id="heroTitle">AI Product Builder</h1>
+      <p class="hero-support">Strategy · Data · Backend</p>
+      <p class="hero-sub" id="heroSub"><span class="rotate" id="heroRotate">Problem Solver</span></p>
+      <div class="hero-stats">
+        <span><b>4단계</b>DX 프로젝트</span>
+        <span><b>4개</b>공모전</span>
+        <span><b>AWS</b>실배포</span>
+      </div>
+      <div class="hero-cta">
+        <button class="cta primary" data-goto="3">프로젝트 보기<i>→</i></button>
+        <a class="cta" href="https://github.com/Parkjin0821" target="_blank" rel="noopener">GitHub</a>
+        <a class="cta" href="https://app.notion.com/p/PortFolio-2d96029496a28095b8e6d6a7db5b8208" target="_blank" rel="noopener">이력서</a>
+        <button class="cta" data-goto="6">연락하기</button>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="mouse"><span></span></div><p>SCROLL</p></div>
+  </section>
+
+  <!-- 02 ABOUT -->
+  <section class="page about" id="about">
+    <div class="section-head">
+      <p class="sec-num">01 — ABOUT</p>
+      <h2>About Me</h2>
+      <p class="sec-desc">데이터에 근거해 만들고, 끝까지 배포합니다</p>
+      <div class="bar"></div>
+    </div>
+    <div class="about-grid">
+      <div class="photo-wrap reveal">
+        <span class="pin"></span>
+        <div class="swing" id="swingCard">
+          <span class="string"></span>
+          <div class="photo-frame">
+            <img src="증명사진/profile.png" alt="박진 증명사진" onerror="this.parentElement.classList.add('noimg')">
+            <span class="photo-fallback">PROFILE<br>PHOTO</span>
+          </div>
+          <p class="swing-tag">PARK JIN — PLANNER · BACKEND</p>
+        </div>
+      </div>
+      <div class="about-text">
+        <h3 class="reveal">안녕하십니까,<br>백엔드와 데이터를 오가며 문제를 해결하는 <em>박진</em>입니다.</h3>
+        <p class="about-lead reveal"><b>데이터</b>가 기본기입니다. 컴퓨터통계학을 전공하며 크롤링부터 NLP, 공간분석까지 —
+          <em>감이 아닌 데이터</em>로 근거를 만드는 습관을 길렀습니다. LG전자 DX School 5기에서는 <b>기획부터 배포까지</b> 전 과정을 완주하며
+          세 개 프로젝트에서 수상했고(우수상 2·장려상 1), FastAPI 기반 실시간 시스템으로 <em>실제 가전 연동과 AWS 배포</em>까지 끝을 봤습니다.</p>
+        <div class="about-stats reveal">
+          <div class="stat"><b>3</b><span>수상 · 우수 2 · 장려 1</span></div>
+          <div class="stat"><b>20만+</b><span>리뷰 NLP 분석</span></div>
+          <div class="stat"><b>138만</b><span>전주 공간분석</span></div>
+          <div class="stat"><b>74</b><span>백엔드 테스트 통과</span></div>
+        </div>
+        <p class="about-closing reveal">“분석에서 멈추지 않고, <em>실행까지 이어지는 개발자</em>가 되고 싶습니다.”</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SKILLS -->
+  <section class="page skills" id="skills">
+    <div class="section-head">
+      <p class="sec-num">02 — SKILLS</p>
+      <h2>Skills &amp; Certifications</h2>
+      <p class="sec-desc">저의 경험으로 만들어진 기술들입니다</p>
+      <div class="bar"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-cards">
+        <p class="col-label">TECH STACK</p>
+        <div class="skill-groups">
+          <div class="skgroup reveal">
+            <h4 class="skg-title">Backend &amp; API</h4>
+            <p class="skg-desc">실시간 시스템의 서버·API·데이터베이스를 직접 설계하고 구현합니다.</p>
+            <div class="skg-icons">
+              <span class="sk"><img src="assets/icons/python.svg" alt=""><em>Python</em></span>
+              <span class="sk"><img src="assets/icons/fastapi.svg" alt=""><em>FastAPI</em></span>
+              <span class="sk"><img src="assets/icons/postgresql.svg" alt=""><em>PostgreSQL</em></span>
+              <span class="sk"><img src="assets/icons/git.svg" alt=""><em>Git</em></span>
+              <span class="sk"><img src="assets/icons/github.svg" alt=""><em>GitHub</em></span>
+            </div>
+            <p class="skg-more">TimescaleDB · REST API 연동(SmartThings·Coway) · SSE</p>
+          </div>
+          <div class="skgroup reveal">
+            <h4 class="skg-title">Data &amp; AI</h4>
+            <p class="skg-desc">데이터 수집·분석부터 NLP·LLM 기반 서비스까지 다룹니다.</p>
+            <div class="skg-icons">
+              <span class="sk"><img src="assets/icons/r.svg" alt=""><em>R</em></span>
+              <span class="sk"><img src="assets/icons/pandas.svg" alt=""><em>Pandas</em></span>
+              <span class="sk"><img src="assets/icons/numpy.svg" alt=""><em>NumPy</em></span>
+              <span class="sk"><img src="assets/icons/scikitlearn.svg" alt=""><em>scikit-learn</em></span>
+              <span class="sk"><img src="assets/icons/selenium.svg" alt=""><em>Selenium</em></span>
+              <span class="sk"><img src="assets/icons/chatgpt.png" alt=""><em>GPT-4o</em></span>
+              <span class="sk"><img src="assets/icons/langchain.svg" alt=""><em>LangGraph</em></span>
+              <span class="sk"><img src="assets/icons/qdrant.svg" alt=""><em>Qdrant</em></span>
+            </div>
+            <p class="skg-more">NLP(SBERT·KoELECTRA·LDA) · RAG 파이프라인</p>
+          </div>
+          <div class="skgroup reveal">
+            <h4 class="skg-title">GIS &amp; Infra</h4>
+            <p class="skg-desc">공간데이터 분석과 배포·운영 인프라를 구성합니다.</p>
+            <div class="skg-icons">
+              <span class="sk"><img src="assets/icons/qgis.svg" alt=""><em>QGIS</em></span>
+              <span class="sk"><img src="assets/icons/aws.png" alt=""><em>AWS</em></span>
+              <span class="sk"><img src="assets/icons/githubactions.svg" alt=""><em>GH Actions</em></span>
+              <span class="sk"><img src="assets/icons/nginx.svg" alt=""><em>Nginx</em></span>
+              <span class="sk"><img src="assets/icons/arduino.svg" alt=""><em>Arduino</em></span>
+            </div>
+            <p class="skg-more">공간분석(IDW 보간) · CI/CD · systemd · IoT 센서</p>
+          </div>
+        </div>
+      </div>
+      <div class="cert-col">
+        <p class="col-label">CERTIFICATIONS</p>
+        <div class="cert reveal"><i>✓</i><div><h5>ADsP (데이터분석 준전문가)</h5><p>한국데이터산업진흥원 · 2026.06.05 취득</p></div></div>
+        <p class="col-label" style="margin-top:32px">AWARDS</p>
+        <div class="cert gold reveal"><i>🏆</i><div><h5>LG DX School 5기 — 수상 3회</h5><p>BX 우수상 · CX 우수상 · DX 장려상</p></div></div>
+        <div class="cert gold reveal"><i>🏆</i><div><h5>AI 아이디어 공모전 — 우수상</h5><p>AILAGro · 데이터로 미래를 그리는 AI 아이디어 공모전</p></div></div>
+        <div class="cert gold reveal"><i>🏆</i><div><h5>제8회 K-디지털 트레이닝 해커톤 — 아이디어상</h5><p>직업능력심사평가원 원장상 · 고용노동부 주최 · 팀 Second Look 팀장 · 2026.09</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PROJECTS -->
+  <section class="page projects" id="projects">
+    <div class="section-head">
+      <p class="sec-num">03 — PROJECTS</p>
+      <h2>Projects</h2>
+      <p class="sec-desc">LG전자 DX School 5기 — AX · BX · CX · DX 4단계 프로젝트</p>
+      <div class="bar"></div>
+    </div>
+    <div class="card-row">
+      <div class="card-item reveal">
+        <article class="pcard" data-panel="ax">
+          <span class="card-topic"><em class="ptype team">TEAM</em>AX · AI 대시보드 기획</span>
+          <div class="thumb ax"><img src="assets/thumbs/ax-data-columns-trend.png" alt="AX 프로젝트" onerror="this.remove()"><b>AX</b></div>
+          <h4>실시간 HR 인력 대시보드</h4>
+          <p>신사업 TF의 인력 현황·역량 갭을 실시간 파악하는 HR 대시보드 기획. 역량 레이더 차트와 QR 기반 자동 출결 아이디어 제안.</p>
+          <div class="role"><span>MY ROLE</span>아이디어 개발 · 대시보드 구성 설계</div>
+          <div class="tags"><i>Dashboard</i><i>HR Data</i></div>
+          <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="pcard award" data-panel="bx">
+          <span class="card-topic"><em class="ptype team">TEAM</em>BX · 브랜드 경험 <em class="topic-award">🏆 우수상</em></span>
+          <div class="thumb bx"><img src="assets/thumbs/bx-home-orbit-nodes.png" alt="BX 프로젝트" onerror="this.remove()"><b>BX</b></div>
+          <h4>ThinQ ‘클로이드’ 홈 매니저</h4>
+          <p>초고령사회 샌드위치 세대를 위한 ThinQ AI 캐릭터 BX 기획 — “말하지 않아도 가족의 일상을 이어주는 홈 매니저”.</p>
+          <div class="role"><span>MY ROLE</span>데이터 조사 · 크롤링 · 발표 준비</div>
+          <div class="tags"><i>ThinQ</i><i>BX 기획</i></div>
+          <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="pcard award" data-panel="cx">
+          <span class="card-topic"><em class="ptype team">TEAM</em>CX · 고객 경험 <em class="topic-award">🏆 우수상</em></span>
+          <div class="thumb cx"><img src="assets/thumbs/cx-sentiment-arch.png" alt="CX 프로젝트" onerror="this.remove()"><b>CX</b></div>
+          <h4>ARTE-MIS — AI 현관 솔루션</h4>
+          <p>네이버 카페·블로그 20만+건 크롤링, SBERT·KoELECTRA NLP 분석으로 기회영역을 도출한 AI 현관 로봇 CX 기획.</p>
+          <div class="role"><span>MY ROLE</span>데이터 수집·크롤링 · NLP 분석 · 발표</div>
+          <div class="tags"><i>NLP</i><i>SBERT</i></div>
+          <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="pcard award" data-panel="dx">
+          <span class="card-topic"><em class="ptype team">TEAM</em>DX · 기술 구현 <em class="topic-award">🏆 장려상</em></span>
+          <div class="thumb dx"><img src="assets/thumbs/dx-sensor-lattice-anomaly.png" alt="DX 프로젝트" onerror="this.remove()"><b>DX</b></div>
+          <h4>ThinQ Workspace Sentinel</h4>
+          <p>요양병원 집단감염을 2~3주 먼저 감지해 ThinQ 가전을 자동 제어하는 IoT 사전대응 시스템. 6주 · 5인 팀 · AWS 실배포.</p>
+          <div class="role"><span>MY ROLE</span>Backend · FastAPI · SSE</div>
+          <div class="tags"><i>FastAPI</i><i>IoT</i></div>
+          <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 CONTEST -->
+  <section class="page contest" id="contest">
+    <div class="section-head">
+      <p class="sec-num">04 — CONTEST</p>
+      <h2>Contests</h2>
+      <p class="sec-desc">공모전 경험</p>
+      <div class="bar"></div>
+    </div>
+    <div class="card-row">
+      <div class="card-item reveal">
+        <article class="ccard award" data-panel="ailagro">
+          <span class="card-topic"><em class="ptype award">AWARD</em>AI 에이전트 기획 <em class="topic-award">🏆 우수상</em></span>
+        <div class="cthumb g1"><img src="assets/thumbs/c1-retrieval-reasoning-graph.png" alt="AILAGro" onerror="this.remove()"></div>
+        <h4>데이터로 미래를 그리는 AI 아이디어 공모전</h4>
+        <p class="corg">제1회 · 2026 · 팀 카페인(CAFE-IN) 4인 · 역할: 아이디어 디벨롭·발표자료</p>
+        <p class="cdesc">하루 61개씩 폐업하는 개인 카페를 위한 ‘AI 공동 경영자’ AILAGro. 트렌드를 보여주고 끝나는 기존 도구와 달리 발주·마케팅·레시피 개선까지 실행하는 에이전트를 제안했습니다.</p>
+        <ul>
+          <li>“감지”에서 “실행”으로 — 자동 실행 구조를 붙여 차별점 도출</li>
+          <li>폐업률 22.65%·유행주기 3~6개월 등 문제 근거 조사</li>
+          <li>발표자료 21장 스토리라인 공동 구성</li>
+        </ul>
+        <div class="tags"><i>RAG</i><i>LangGraph</i><i>GPT-4o</i></div>
+        <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="ccard" data-panel="kma">
+          <span class="card-topic"><em class="ptype contest">CONTEST</em>전력설비 화재·방전 위험 예측</span>
+        <div class="cthumb g2"><img src="assets/thumbs/c2-hex-risk-lattice.png" alt="기상청 빅데이터 콘테스트" onerror="this.remove()"></div>
+        <h4>기상청 빅데이터 콘테스트</h4>
+        <p class="corg">기상청 주최 · 2026 · 팀 참가</p>
+        <p class="cdesc">강원 전주 138만 개에 8종+ 공공데이터를 융합해 「발화원 × 연소조건」 곱 모델로 화재위험을 정량화·예측. 위험구역 20.8만 개를 도출했습니다.</p>
+        <ul>
+          <li>QGIS 공간조인 + IDW 보간, 8종+ 데이터 융합</li>
+          <li>한전 정전통계 가중 + 산림청 산불지수(DWI) 근거</li>
+          <li>실화재 664건·낙뢰 대조로 외부검증(라벨 비공개 정면돌파)</li>
+        </ul>
+        <div class="tags"><i>QGIS</i><i>Python·R</i><i>ML</i></div>
+        <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="ccard" data-panel="futurecar">
+          <span class="card-topic"><em class="ptype contest">CONTEST</em>AX 추천 플랫폼 · 2차 MVP ML 백엔드</span>
+        <div class="cthumb g1"><img src="assets/thumbs/c3-prediction-ladder.png" alt="미래차 AX 추천 플랫폼" onerror="this.remove()"></div>
+        <h4>미래차 AX 전환·실증 추천 플랫폼</h4>
+        <p class="corg">산업통상자원부 공공데이터 활용 아이디어 공모전 · 광주/전남 · 팀 프로젝트</p>
+        <p class="cdesc">공공데이터를 수집해 LightGBM 랭킹 모델과 근거 기반 추천 API를 구현, 팀의 1차 MVP를 대체할 수 있는 2차 MVP 백엔드를 만들었습니다.</p>
+        <ul>
+          <li>공공데이터 11종 수집 → FastAPI 추천/로드맵 API 직접 구현 (테스트 31건 통과, 직접 확인)</li>
+          <li>LightGBM 랭킹 모델로 추천 순위 재정렬, evidence_id 근거 연결</li>
+          <li>피드백 학습 루프·자동 재학습 + 서비스 기획 + UI 피드백</li>
+        </ul>
+        <div class="tags"><i>FastAPI</i><i>LightGBM</i><i>공공데이터</i></div>
+        <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+      <div class="card-item reveal">
+        <article class="ccard award" data-panel="kdt">
+          <span class="card-topic"><em class="ptype award">AWARD</em>시니어 정보판단 AI 코치 <em class="topic-award">🏆 아이디어상</em></span>
+        <div class="cthumb g1"><img src="assets/thumbs/c4-question-branch.png" alt="제8회 K-디지털 트레이닝 해커톤" onerror="this.remove()"></div>
+        <h4>제8회 K-디지털 트레이닝 해커톤</h4>
+        <p class="corg">고용노동부 주최 · 2026 · 자유과제 · 팀 Second Look 6인 팀장 · 본선 수상</p>
+        <p class="cdesc">진위를 AI가 판정하는 대신 공식 근거와 확인 질문을 붙여 60대가 스스로 판단하게 하는 PWA 「곁눈」. PM으로 문제 정의·근거 통합·실측 지표와 최종 기획서를 맡았습니다.</p>
+        <ul>
+          <li>공식문서 1,052건 수집 파이프라인 설계·운영 → RAG 데이터 기반 구축</li>
+          <li>평가 세트 재라벨링·임베딩 전환으로 근거 검색 63.6% → 83.3% 확정</li>
+          <li>미실시 서술·용어 모순·경쟁사 오표기를 제출 전 직접 색출·제거</li>
+        </ul>
+        <div class="tags"><i>RAG</i><i>FastAPI</i><i>PWA</i></div>
+        <button class="more">자세히 보기 →</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 TIMELINE -->
+  <section class="page timeline" id="timeline">
+    <div class="section-head">
+      <p class="sec-num">05 — TIMELINE</p>
+      <h2>Timeline</h2>
+      <p class="sec-desc">걸어온 길입니다</p>
+      <div class="bar"></div>
+    </div>
+    <div class="tl-wrap">
+      <div class="tl-line"><span></span></div>
+      <div class="tl-item left hl"><div class="tl-card"><em>2026.09</em><h5>제8회 KDT 해커톤 — 본선 아이디어상 🏆</h5><p>직업능력심사평가원 원장상 · 팀 Second Look 팀장 · 「곁눈」</p></div></div>
+      <div class="tl-item right hl"><div class="tl-card"><em>2026.06</em><h5>LG DX School 5기 수료 — 수상 3회 🏆</h5><p>BX·CX 우수상, DX 장려상</p></div></div>
+      <div class="tl-item left hl"><div class="tl-card"><em>2026.06</em><h5>ADsP 자격 취득</h5><p>데이터분석 준전문가 · 한국데이터산업진흥원</p></div></div>
+      <div class="tl-item right"><div class="tl-card"><em>2026.02</em><h5>조선대학교 컴퓨터통계학과 졸업</h5><p>데이터 분석·통계 기반 전공 이수</p></div></div>
+      <div class="tl-item left hl"><div class="tl-card"><em>2025.12</em><h5>LG전자 DX School 5기 입과</h5><p>AX·BX·CX·DX 전 과정 프로젝트 수행</p></div></div>
+      <div class="tl-item right"><div class="tl-card"><em>2020.03</em><h5>조선대학교 컴퓨터통계학과 입학</h5><p>통계·프로그래밍 기초부터 시작</p></div></div>
+    </div>
+  </section>
+
+  <!-- 07 CONTACT -->
+  <section class="page contact" id="contact">
+    <div class="contact-inner">
+      <div class="marquee" aria-hidden="true"><div class="mq-track">
+        <span>LET'S WORK TOGETHER ✦ DATA × PLANNING × BACKEND ✦ SEOUL · GWANGJU ✦&nbsp;</span>
+        <span>LET'S WORK TOGETHER ✦ DATA × PLANNING × BACKEND ✦ SEOUL · GWANGJU ✦&nbsp;</span>
+      </div></div>
+      <p class="sec-num center">06 — CONTACT · END OF JOURNEY</p>
+      <h2>이제, 함께 만들 차례입니다</h2>
+      <p class="sec-desc center">언제든 편하게 연락 주세요. 새로운 기회와 협업을 환영합니다.</p>
+      <div class="links">
+        <a class="link-card reveal" href="mailto:parkjin8326@gmail.com"><i>✉</i><h5>Email</h5><p>parkjin8326@gmail.com</p></a>
+        <a class="link-card reveal" href="https://github.com/Parkjin0821" target="_blank" rel="noopener"><i>◉</i><h5>GitHub</h5><p>github.com/Parkjin0821</p></a>
+        <a class="link-card reveal" href="https://app.notion.com/p/PortFolio-2d96029496a28095b8e6d6a7db5b8208" target="_blank" rel="noopener"><i>✎</i><h5>Notion</h5><p>전체 포트폴리오 보기</p></a>
+      </div>
+      <a class="mail-btn" href="mailto:parkjin8326@gmail.com">메일 보내기 ✉</a>
+      <p class="copy">© 2026 PARK JIN</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== 반페이지 상세 패널 ===== -->
+<div class="scrim" id="scrim"></div>
+<aside class="panel" id="panel">
+  <button class="close" id="panelClose">✕</button>
+  <div class="panel-body" id="panelBody"><!-- JS 주입 --></div>
+</aside>
+
+<script src="js/main.js?v=71"></script>
+<script src="js/journey.js?v=24"></script>
+</body>
+</html>

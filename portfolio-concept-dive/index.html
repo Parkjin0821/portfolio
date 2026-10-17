@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Portfolio - 박 진</title>
+  <meta name="description" content="데이터에서 문제를 찾고, 근거가 보이는 서비스로 만듭니다. LG DX School 수상 3회 · 공모전 수상 2회 · FastAPI·데이터 분석·AI 활용.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Portfolio - 박 진">
+  <meta property="og:description" content="데이터에서 문제를 찾고, 근거가 보이는 서비스로 만듭니다. LG DX School 수상 3회 · 공모전 수상 2회 · FastAPI·데이터 분석·AI 활용.">
+  <meta property="og:image" content="https://parkjin0821-portfolio.netlify.app/assets/og-image.png">
+  <meta property="og:url" content="https://parkjin0821-portfolio.netlify.app/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portfolio - 박 진">
+  <meta name="twitter:description" content="데이터에서 문제를 찾고, 근거가 보이는 서비스로 만듭니다. LG DX School 수상 3회 · 공모전 수상 2회 · FastAPI·데이터 분석·AI 활용.">
+  <meta name="twitter:image" content="https://parkjin0821-portfolio.netlify.app/assets/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a5cff'/%3E%3Cpath d='M18 46V18h15c9 0 15 5 15 13s-6 13-15 13h-7v2zM26 26v10h7c4 0 7-2 7-5s-3-5-7-5z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+  <link rel="stylesheet" href="dive.css?v=37">
+</head>
+<body>
+  <!-- Menu bar: the site header outside the computer, the OS menu bar once you are inside it. -->
+  <header class="bar">
+    <a class="bar-brand" href="#hero" data-go="0" aria-label="처음으로"><span class="bar-mark">PJ</span><span class="bar-name">Park Jin</span></a>
+    <span class="bar-path" aria-hidden="true"><i class="ph ph-folder-simple"></i><span id="barPath">~/</span></span>
+    <nav class="bar-nav" aria-label="주요 메뉴">
+      <a href="#about" data-go="2">About</a>
+      <a href="#skills" data-go="3">Skills</a>
+      <a href="#projects" data-go="4">Projects</a>
+      <a href="#competitions" data-go="5">Competitions</a>
+      <a href="#contact" data-go="6">Contact</a>
+    </nav>
+    <span class="bar-clock" id="barClock" aria-hidden="true"></span>
+  </header>
+
+  <!-- Scroll track. In dive mode the scenes are fixed layers and this track only supplies scroll distance. -->
+  <div class="track" aria-hidden="true"></div>
+
+  <main class="stage">
+    <!-- The desktop wallpaper is one fixed layer shared by every desktop scene: it never zooms during
+         icon dives, and it rides along with the desktop when you dive into or out of the laptop screen. -->
+    <div class="desk-bg" aria-hidden="true"><i></i><b></b></div>
+    <div class="desk-veil" aria-hidden="true"><i></i></div>
+
+    <!-- 00 Hero: the laptop. Its screen is the first portal. -->
+    <section class="scene scene--hero" id="hero" data-scene="0" aria-labelledby="heroTitle">
+      <div class="hero-copy">
+        <h1 id="heroTitle" class="hero-title">PARK JIN<span>.</span></h1>
+        <p class="hero-sub">데이터에서 문제를 찾고,<br>근거가 보이는 서비스로 만듭니다.</p>
+        <button class="scroll-cue" type="button" data-go="1"><span class="scroll-cue-mouse" aria-hidden="true"><i></i></span><span>스크롤해서 컴퓨터 안으로</span></button>
+      </div>
+      <div class="laptop" data-laptop>
+        <div class="laptop-lid">
+          <div class="laptop-screen" data-portal><div class="boot" aria-hidden="true"><span class="boot-mark">PJ</span><span class="boot-line"><i></i></span></div></div>
+        </div>
+        <div class="laptop-base"><span class="laptop-lip" aria-hidden="true"></span><i></i></div>
+      </div>
+    </section>
+
+    <!-- 01 Desktop: the first thing inside the screen, before any window opens. -->
+    <section class="scene scene--desk scene--home" id="desktop" data-scene="1" data-path="~/" aria-labelledby="homeTitle">
+      <div class="widgets">
+        <div class="widget widget--clock">
+          <p class="widget-time" id="widgetTime" aria-hidden="true">00:00</p>
+          <p class="widget-date" id="widgetDate" aria-hidden="true"></p>
+        </div>
+        <div class="widget widget--summary">
+          <h2 id="homeTitle" class="widget-title">박진의 작업 공간</h2>
+          <p class="widget-sub">데이터 분석 · AI · 백엔드 작업을 모아 둔 데스크톱입니다.</p>
+          <dl class="widget-stats">
+            <div><dt>프로젝트</dt><dd>8</dd></div>
+            <div><dt>수상</dt><dd>5</dd></div>
+            <div><dt>자격증</dt><dd>1</dd></div>
+          </dl>
+        </div>
+        <div class="widget widget--recent">
+          <h3 class="widget-head">주요 작업</h3>
+          <ul class="recent">
+            <li><button type="button" data-go="5"><i class="ph-fill ph-trophy"></i><span><strong>곁눈</strong><small>KDT 해커톤 아이디어상 · PM</small></span></button></li>
+            <li><button type="button" data-go="4"><i class="ph-fill ph-folder-simple"></i><span><strong>ThinQ Workspace Sentinel</strong><small>DX 장려상 · 백엔드</small></span></button></li>
+            <li><button type="button" data-go="4"><i class="ph-fill ph-folder-simple"></i><span><strong>ARTE-MIS</strong><small>CX 우수상 · NLP 분석</small></span></button></li>
+            <li><button type="button" data-go="5"><i class="ph-fill ph-trophy"></i><span><strong>미래차 AX 추천 플랫폼</strong><small>2차 MVP 백엔드 직접 구현</small></span></button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="icons" data-icons></div>
+    </section>
+
+    <!-- 02 About: the desktop, with the profile window open. -->
+    <section class="scene scene--desk" id="about" data-scene="2" data-path="~/about" aria-labelledby="aboutTitle">
+      <article class="win win--about" data-landing>
+        <div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-title">about.app</span></div>
+        <div class="about-body">
+          <figure class="about-photo"><img src="assets/profile.webp" alt="박진 프로필 사진" width="640" height="853"></figure>
+          <div class="about-text">
+            <h2 id="aboutTitle">AI와 함께 데이터를 다루는<br><span>개발자, 박진입니다.</span></h2>
+            <p>문제와 지표는 직접 정하고, 데이터 분석과 백엔드 구현은 AI 코딩 도구와 함께 빠르게 만듭니다. 결과는 직접 검증하고, 예상과 다르면 원인을 찾아 다음 버전에 반영합니다.</p>
+          </div>
+          <dl class="about-facts">
+            <div><dt>전공</dt><dd>Computer Statistics</dd></div>
+            <div><dt>교육</dt><dd>LG DX School 5기</dd></div>
+            <div><dt>자격</dt><dd>ADsP 데이터분석 준전문가</dd></div>
+          </dl>
+        </div>
+      </article>
+      <div class="icons" data-icons></div>
+    </section>
+
+    <!-- 03 Skills: a terminal and a system-information panel. -->
+    <section class="scene scene--desk" id="skills" data-scene="3" data-path="~/skills" aria-labelledby="skillsTitle">
+      <article class="win win--term" data-landing>
+        <div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-title">zsh · skills</span></div>
+        <div class="term">
+          <h2 id="skillsTitle" class="sr-only">사용 기술과 자격증</h2>
+          <p class="term-cmd"><span class="term-prompt">park@jin ~ %</span> <span class="type" data-type="cat stack.txt"></span></p>
+          <div class="term-out">
+            <section class="stack">
+              <h3><i class="ph ph-plugs-connected"></i>Backend & API</h3>
+              <p class="stack-tools">Python · FastAPI · PostgreSQL · AWS · Git</p>
+              <p class="stack-note">상태머신, 인증, SSE 이벤트 스트림, 외부 API 연동과 AWS 배포</p>
+            </section>
+            <section class="stack">
+              <h3><i class="ph ph-chart-scatter"></i>Data & AI</h3>
+              <p class="stack-tools">Pandas · NumPy · scikit-learn · R · RAG</p>
+              <p class="stack-note">데이터 수집·전처리, NLP 분석, 임베딩 검색과 평가</p>
+            </section>
+            <section class="stack">
+              <h3><i class="ph ph-sparkle"></i>AI 활용</h3>
+              <p class="stack-tools">ChatGPT · Claude Code · Codex</p>
+              <ul class="stack-made">
+                <li><b>웹사이트</b>이 포트폴리오의 화면 전환·인터랙션 구현</li>
+                <li><b>데이터 파이프라인</b>곁눈의 공식 문서 수집·태깅·검색 평가</li>
+              </ul>
+              <p class="stack-note">구현은 AI와 함께, 설계·검증·운영 판단은 직접 합니다</p>
+            </section>
+          </div>
+          <p class="term-cmd term-cmd--idle"><span class="term-prompt">park@jin ~ %</span> <span class="caret"></span></p>
+        </div>
+      </article>
+      <aside class="win win--info">
+        <div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-title">시스템 정보</span></div>
+        <div class="info">
+          <div class="info-cert">
+            <i class="ph-fill ph-seal-check"></i>
+            <div><strong>ADsP</strong><span>데이터분석 준전문가</span></div>
+          </div>
+          <dl>
+            <div><dt>발급기관</dt><dd>한국데이터산업진흥원</dd></div>
+            <div><dt>취득일</dt><dd>2026.06.05</dd></div>
+          </dl>
+          <div class="info-edu"><strong>LG DX School 5기</strong><span>기획부터 개발·배포까지 프로젝트 수행</span></div>
+        </div>
+      </aside>
+      <div class="icons" data-icons></div>
+    </section>
+
+    <!-- 04 Projects: the LG DX School folder, opened in a file browser. -->
+    <section class="scene scene--desk" id="projects" data-scene="4" data-path="~/projects/lg-dx-school" aria-labelledby="projectsTitle">
+      <article class="win win--finder" data-landing>
+        <div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-title">LG DX School 5기</span></div>
+        <div class="finder">
+          <nav class="finder-side" aria-label="폴더">
+            <p>프로젝트</p>
+            <a class="is-here" href="#projects" data-go="4"><i class="ph-fill ph-folder-simple"></i>LG DX School</a>
+            <a href="#competitions" data-go="5"><i class="ph ph-folder-simple"></i>공모전</a>
+          </nav>
+          <div class="finder-main">
+            <h2 id="projectsTitle" class="finder-title">LG DX School 프로젝트 <span>4개 항목</span></h2>
+            <div class="files">
+              <button class="file" type="button" data-project="ax">
+                <span class="file-art"><img src="assets/ax-dashboard.webp" alt="" decoding="async"></span>
+                <span class="file-meta"><small>AX</small><strong>실시간 HR 인력 대시보드</strong><em>문제 정의 · 데이터 전략</em></span>
+              </button>
+              <button class="file" type="button" data-project="bx">
+                <span class="file-art"><img src="assets/bx-family-care.webp" alt="" decoding="async"></span>
+                <span class="file-meta"><small>BX · 우수상</small><strong>ThinQ 클로이드 홈 매니저</strong><em>데이터 조사 · 크롤링</em></span>
+              </button>
+              <button class="file" type="button" data-project="cx">
+                <span class="file-art"><img src="assets/cx-arte-mis.webp" alt="" decoding="async"></span>
+                <span class="file-meta"><small>CX · 우수상</small><strong>ARTE-MIS</strong><em>20만+ 건 NLP 분석</em></span>
+              </button>
+              <button class="file" type="button" data-project="sentinel">
+                <span class="file-art"><img src="assets/dx-sentinel-demo.webp" alt="" decoding="async"></span>
+                <span class="file-meta"><small>DX · 장려상</small><strong>ThinQ Workspace Sentinel</strong><em>FastAPI 백엔드 · AWS 배포</em></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+      <div class="icons" data-icons></div>
+    </section>
+
+    <!-- 05 Competitions: one case at a time in a viewer app. -->
+    <section class="scene scene--desk" id="competitions" data-scene="5" data-path="~/projects/competitions" aria-labelledby="compTitle">
+      <article class="win win--viewer" data-landing>
+        <div class="win-bar"><span class="win-dots"><i></i><i></i><i></i></span><span class="win-title">공모전</span></div>
+        <div class="viewer">
+          <h2 id="compTitle" class="sr-only">공모전</h2>
+          <div class="viewer-tabs" role="tablist" aria-label="공모전 선택"></div>
+          <div class="cases">
+            <div class="page-head"><span>공모전</span><span id="casePage">01 / 03</span></div>
+            <article class="case is-active" data-project="gyeotnun">
+              <figure class="case-art"><img src="assets/gyeotnun.webp" alt="곁눈 서비스 폼보드" decoding="async"></figure>
+              <div class="case-copy">
+                <p class="case-label">KDT 해커톤 · 아이디어상</p>
+                <h3>곁눈</h3>
+                <p>60대가 받은 정보에 공식 근거와 확인 질문을 붙이는 정보판단 AI 코치. 문제 정의, 데이터 기반, 지표와 최종 기획서를 총괄했습니다.</p>
+                <dl class="case-proof">
+                  <div><dt><span class="count" data-count="1052">1,052</span></dt><dd>공식 문서</dd></div>
+                  <div><dt><span class="count" data-count="83.3" data-decimal="1">83.3</span>%</dt><dd>근거 검색 성공률</dd></div>
+                  <div><dt>AWARD</dt><dd>KDT 아이디어상</dd></div>
+                </dl>
+                <button class="pill" type="button" data-open="gyeotnun">자세히 보기 <i class="ph ph-arrow-up-right"></i></button>
+              </div>
+            </article>
+            <article class="case" data-project="futurecar" hidden>
+              <figure class="case-art"><img src="assets/futurecar.webp" alt="미래차 AX 추천 플랫폼 소개 자료" decoding="async"></figure>
+              <div class="case-copy">
+                <p class="case-label">미래차 AX 공모전</p>
+                <h3>미래차 AX 추천 플랫폼</h3>
+                <p>11종 공공데이터와 LightGBM 랭킹 모델을 연결한 근거 기반 추천 API. 1차 MVP를 대체할 2차 백엔드를 직접 구현했습니다.</p>
+                <dl class="case-proof">
+                  <div><dt><span class="count" data-count="11">11</span></dt><dd>공공데이터</dd></div>
+                  <div><dt><span class="count" data-count="31">31</span>/31</dt><dd>API 테스트 통과</dd></div>
+                  <div><dt>2nd MVP</dt><dd>직접 구현</dd></div>
+                </dl>
+                <button class="pill" type="button" data-open="futurecar">자세히 보기 <i class="ph ph-arrow-up-right"></i></button>
+              </div>
+            </article>
+            <article class="case" data-project="weather" hidden>
+              <figure class="case-art"><img src="assets/weather.webp" alt="QGIS 전력설비 위험도 분석 지도" decoding="async"></figure>
+              <div class="case-copy">
+                <p class="case-label">날씨 빅데이터 콘테스트</p>
+                <h3>전력설비 화재위험 예측</h3>
+                <p>강원 전주 138만 개와 기상·지형·산림 데이터를 결합해 「발화원 × 연소조건」 위험 모델을 설계했습니다.</p>
+                <dl class="case-proof">
+                  <div><dt><span class="count" data-count="1.38" data-decimal="2">1.38</span>M</dt><dd>전주 데이터</dd></div>
+                  <div><dt><span class="count" data-count="8">8</span>+</dt><dd>융합 데이터</dd></div>
+                  <div><dt><span class="count" data-count="208">208</span>K</dt><dd>위험구역 도출</dd></div>
+                </dl>
+                <button class="pill" type="button" data-open="weather">자세히 보기 <i class="ph ph-arrow-up-right"></i></button>
+              </div>
+            </article>
+            <article class="case" data-project="ailagro" hidden>
+              <figure class="case-art"><img src="assets/ailagro.webp" alt="AILAGro 발표자료 표지, 팀 카페인(CAFE-IN)" decoding="async"></figure>
+              <div class="case-copy">
+                <p class="case-label">AI 아이디어 공모전 · 우수상</p>
+                <h3>AILAGro</h3>
+                <p>SNS 트렌드를 감지하는 데서 끝나지 않고, 자동 발주·마케팅 문구·레시피 개선까지 실행하는 카페 소상공인용 AI 에이전트를 제안했습니다. 아이디어 디벨롭과 발표자료를 함께 만들었습니다.</p>
+                <dl class="case-proof">
+                  <div><dt>AWARD</dt><dd>AI 아이디어 공모전 우수상</dd></div>
+                  <div><dt><span class="count" data-count="61">61</span>개</dt><dd>하루 개인 카페 폐업</dd></div>
+                  <div><dt><span class="count" data-count="4">4</span>인</dt><dd>팀 카페인(CAFE-IN)</dd></div>
+                </dl>
+                <button class="pill" type="button" data-open="ailagro">자세히 보기 <i class="ph ph-arrow-up-right"></i></button>
+              </div>
+            </article>
+            <div class="page-foot"><span>Park Jin · Portfolio 2026</span><span id="caseFoot"></span></div>
+          </div>
+        </div>
+      </article>
+      <div class="icons" data-icons></div>
+    </section>
+
+    <!-- 06 Contact: back out to the laptop; the screen powers off. -->
+    <section class="scene scene--contact" id="contact" data-scene="6" aria-labelledby="contactTitle">
+      <div class="contact-copy">
+        <h2 id="contactTitle">연락 &amp; <span>작업 기록</span></h2>
+        <div class="links">
+          <a class="link" href="mailto:parkjin8326@gmail.com"><i class="ph ph-envelope-simple"></i><span>Email</span><strong>parkjin8326@gmail.com</strong><i class="ph ph-arrow-up-right"></i></a>
+          <a class="link" href="https://github.com/Parkjin0821" target="_blank" rel="noopener"><i class="ph ph-github-logo"></i><span>GitHub</span><strong>Parkjin0821</strong><i class="ph ph-arrow-up-right"></i></a>
+          <a class="link" href="https://shade-egret-c5a.notion.site/PortFolio-2d96029496a28095b8e6d6a7db5b8208" target="_blank" rel="noopener"><i class="ph ph-notebook"></i><span>Notion</span><strong>Portfolio archive</strong><i class="ph ph-arrow-up-right"></i></a>
+        </div>
+        <p class="foot">© 2026 Park Jin</p>
+      </div>
+      <div class="laptop laptop--end" data-laptop>
+        <div class="laptop-lid">
+          <div class="laptop-screen" data-portal><span class="screen-off" aria-hidden="true"></span></div>
+        </div>
+        <div class="laptop-base"><span class="laptop-lip" aria-hidden="true"></span><i></i></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Project page: a document window. Opening a file grows it out of the card; the content sits on a
+       white page over a grey viewer, like opening the project file on this computer. -->
+  <dialog class="look" id="look" aria-labelledby="lookTitle">
+    <div class="win-bar"><span class="win-dots"><button class="look-close" type="button" aria-label="닫기"></button><i></i><i></i></span><span class="win-title" id="lookFile"></span></div>
+    <div class="look-scroll">
+      <article class="look-page">
+        <header class="look-head">
+          <p class="look-label" id="lookLabel"></p>
+          <h2 id="lookTitle"></h2>
+          <p class="look-summary" id="lookSummary"></p>
+        </header>
+        <figure class="look-cover"><img id="lookImage" alt=""><figcaption id="lookCaption"></figcaption></figure>
+        <div class="look-grid">
+          <section><h3><span>01</span>내가 맡은 일</h3><p id="lookRole"></p></section>
+          <section><h3><span>02</span>주요 판단</h3><p id="lookDecision"></p></section>
+          <section><h3><span>03</span>결과와 범위</h3><p id="lookResult"></p></section>
+        </div>
+        <h3 class="look-h">관련 자료</h3>
+        <div class="look-links" id="lookLinks"></div>
+        <footer class="look-foot"><span>Park Jin · Portfolio 2026</span><span id="lookFoot"></span></footer>
+      </article>
+    </div>
+  </dialog>
+
+  <script src="dive.js?v=27"></script>
+</body>
+</html>

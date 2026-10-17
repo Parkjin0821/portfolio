@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>곁눈 데이터 리포트 - 박 진</title>
+<meta name="description" content="곁눈 근거 검색이 참조하는 공식 문서의 수집·정규화·가설 점검 기록">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter+Tight:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>
+/* A report opened on the portfolio's computer: a window bar, then white pages on a grey viewer.
+   Same tokens as portfolio-concept-dive (blue accent, SUIT, Plex Mono, 14px windows). */
+:root{--ink:#0d1a33;--muted:#53627c;--soft:#8a99b3;--line:#dde5f2;--blue:#0a5cff;--blue-deep:#0b3d91;--blue-pale:#eaf1ff;--viewer:#e7ecf4;color-scheme:light}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--viewer);color:var(--ink);font:400 15px/1.75 'SUIT Variable','Inter Tight',system-ui,sans-serif;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+/* window bar */
+.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:16px;height:44px;padding:0 18px;background:linear-gradient(#fbfcff,#f2f5fb);border-bottom:1px solid #d5deec}
+.dots{display:flex;gap:7px}
+.dots i{width:11px;height:11px;border-radius:50%;background:#ff5f57;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.14)}
+.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+.bar-title{position:absolute;left:50%;transform:translateX(-50%);font:500 12.5px 'IBM Plex Mono',monospace;color:var(--muted);white-space:nowrap}
+.bar-owner{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.bar-owner b{display:grid;place-items:center;width:22px;height:22px;border-radius:6px;background:var(--blue);color:#fff;font:600 9.5px 'Inter Tight',sans-serif}
+/* pages */
+.doc{display:grid;gap:28px;max-width:900px;margin:0 auto;padding:36px 18px 72px}
+.page{position:relative;padding:clamp(28px,5.6vw,64px) clamp(22px,6vw,72px) 28px;border-radius:4px;background:#fff;box-shadow:0 1px 2px rgba(13,26,51,.08),0 28px 60px -34px rgba(16,48,110,.38)}
+.page-foot{display:flex;justify-content:space-between;gap:12px;margin-top:44px;padding-top:12px;border-top:1px solid var(--line);font:500 11.5px 'IBM Plex Mono',monospace;color:var(--soft)}
+.label{font-size:13px;font-weight:600;color:var(--blue)}
+h1{margin:10px 0 18px;font:650 clamp(30px,4.4vw,44px)/1.18 'SUIT Variable',sans-serif;letter-spacing:-.045em}
+h2{margin:6px 0 6px;font-size:clamp(24px,3vw,30px);line-height:1.25;letter-spacing:-.04em;font-weight:650}
+h2+.sub{margin-bottom:26px;color:var(--muted)}
+h3{display:flex;align-items:baseline;gap:8px;margin:0 0 10px;font-size:15px;font-weight:650}
+h3 small{font:500 11px 'IBM Plex Mono',monospace;color:var(--soft)}
+.lede{max-width:62ch;font-size:16.5px;line-height:1.8;color:#33425d}
+.lede+.lede{margin-top:12px}
+.num{font-family:'Inter Tight',sans-serif;font-variant-numeric:tabular-nums}
+/* snapshot timeline: replaces the gold side-line note */
+.callout{margin-top:36px;padding:22px 24px 24px;border-radius:12px;background:#f5f8fe;border:1px solid var(--line)}
+.callout-head{display:flex;align-items:center;gap:10px;font-weight:650}
+.callout-head i{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--blue-pale);color:var(--blue);font-size:16px}
+.callout p{margin-top:10px;font-size:14.5px;color:var(--muted)}
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:22px 0 0;padding:0;list-style:none}
+.timeline li{position:relative;padding:22px 14px 0 0}
+.timeline li:before{content:'';position:absolute;left:0;right:0;top:6px;height:2px;background:#cbd8ee}
+.timeline li:after{content:'';position:absolute;left:0;top:1px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #9fb6dc}
+.timeline li:last-child:before{right:auto;width:12px}
+.timeline em{display:block;font:500 11.5px 'IBM Plex Mono',monospace;font-style:normal;color:var(--soft)}
+.timeline span{display:block;font-size:13px;color:var(--muted)}
+.timeline strong{display:block;margin-top:4px;font:650 17px 'Inter Tight','SUIT Variable',sans-serif;letter-spacing:-.02em}
+.timeline .final:after{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px rgba(10,92,255,.15)}
+.timeline .final strong{color:var(--blue)}
+.timeline .final span{color:var(--blue-deep);font-weight:600}
+/* can / cannot: replaces the cyan side-line note */
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.scope div{padding:20px 22px;border-radius:12px;border:1px solid var(--line)}
+.scope .can{background:#f3f8ff}
+.scope .cannot{background:#fafbfd}
+.scope h3 i{font-size:18px}
+.scope .can h3 i{color:var(--blue)}
+.scope .cannot h3 i{color:#b4543f}
+.scope p{font-size:14.5px;color:var(--muted)}
+.scope p+p{margin-top:8px}
+/* stat tiles */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:0 0 30px;padding:0}
+.stats div{padding:14px 16px;border-radius:10px;background:#f5f8fe;border:1px solid var(--line)}
+.stats dt{font-size:12.5px;color:var(--muted)}
+.stats dd{margin-top:2px;font:650 24px 'Inter Tight',sans-serif;letter-spacing:-.03em}
+.stats .warn dd{color:#b4543f}
+.stats .muted-note{grid-column:1/-1;padding:0;border:0;background:none;font-size:13px;color:var(--soft)}
+/* tables */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 30px}
+.block{margin-bottom:30px}
+.block:last-child{margin-bottom:0}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:12px;font-weight:600;color:var(--soft);border-bottom:1.5px solid var(--ink)}
+td:not(:first-child),th:not(:first-child){text-align:right;font-family:'Inter Tight',sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td code{font:500 12.5px 'IBM Plex Mono',monospace;color:var(--muted)}
+/* findings */
+.findings{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:f}
+.findings li{counter-increment:f;display:grid;grid-template-columns:30px 1fr;gap:8px;font-size:14.5px;color:var(--muted)}
+.findings li:before{content:counter(f,decimal-leading-zero);font:600 11.5px/1.9 'IBM Plex Mono',monospace;color:var(--blue)}
+.findings b{color:var(--ink);font-weight:600}
+.conclusion{display:grid;gap:10px;padding:22px 24px;border-radius:12px;background:var(--ink);color:#e7ecf7}
+.conclusion h3{color:#fff}
+.conclusion p{font-size:14.5px;color:#b9c6dd}
+.conclusion p:first-of-type{color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;padding:0;list-style:none}
+.chips li{padding:6px 12px;border-radius:999px;background:var(--blue-pale);font-size:13px;color:var(--blue-deep)}
+.chips li.note{background:none;padding-left:4px;color:var(--soft)}
+.status-miss{color:#b4543f}
+/* closing */
+.end{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:6px;padding:20px 24px;border-radius:12px;border:1px solid var(--line)}
+.end p{font-size:14px;color:var(--muted)}
+.end strong{color:var(--ink)}
+.end a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #c4d4ee;border-radius:999px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none}
+.end a:hover{border-color:var(--blue)}
+@media (max-width:720px){
+  .grid2,.scope{grid-template-columns:1fr}
+  .timeline{grid-template-columns:1fr;gap:4px}
+  .timeline li{padding:0 0 14px 26px}
+  .timeline li:before{left:5px;right:auto;top:12px;bottom:0;width:2px;height:auto}
+  .timeline li:last-child:before{display:none}
+  .timeline li:after{top:5px}
+  .bar-owner span{display:none}
+}
+@media print{body{background:#fff}.bar{display:none}.doc{padding:0;gap:0}.page{box-shadow:none;break-after:page}}
+</style>
+</head>
+<body>
+<header class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="bar-title">gyeotnun-data-report.html</span><span class="bar-owner"><b>PJ</b><span>Park Jin</span></span></header>
+
+<main class="doc">
+  <!-- 01 overview -->
+  <article class="page" aria-labelledby="t1">
+    <p class="label">Second Look · 곁눈 · KDT 해커톤 2026</p>
+    <h1 id="t1">공식 데이터 수집·분석 리포트</h1>
+    <p class="lede">곁눈의 근거 검색(RAG)이 참조하는 공식 문서를 수집·정규화하고, 문제 가설을 데이터로 점검한 기록입니다. 수집 대상·태깅 규칙·검증 설계는 제가 정했고 파이프라인 실행과 결과 해석도 직접 했습니다.</p>
+    <p class="lede">robots.txt 준수와 요청 간격(0.7초)을 지켰고, SHA-256 본문 해시로 중복을 제거한 뒤 850자·100자 오버랩으로 청킹했습니다.</p>
+
+    <section class="callout" aria-labelledby="t1a">
+      <div class="callout-head" id="t1a"><i class="ph ph-info"></i>수치 읽는 법: 스냅샷이 여러 개입니다</div>
+      <p>아래 리포트는 <b>파이프라인을 돌린 시점별 중간 스냅샷</b>이라, 최종 제출 기획서의 수치와 다릅니다. 심사 제출본에 기재된 값(공식 문서 1,052건 · 청크 2,012건)이 최종 기준이며, 이 페이지는 거기에 이르기까지의 과정 기록입니다.</p>
+      <ol class="timeline">
+        <li><em>2026-07-24</em><span>1차 수집</span><strong class="num">577건 · 1,455 청크</strong></li>
+        <li><em>2026-07-31</em><span>확장 병합</span><strong class="num">1,017건 · 2,065 청크</strong></li>
+        <li class="final"><em>2026-08-10</em><span>최종 제출본 기준</span><strong class="num">1,052건 · 2,012 청크</strong></li>
+      </ol>
+    </section>
+
+    <div class="scope">
+      <div class="can">
+        <h3><i class="ph ph-check-circle"></i>이 데이터로 말할 수 있는 것</h3>
+        <p>공식 문서에서 기관사칭·긴급성 압박·금전 요구 같은 <b>표현 구조가 반복된다</b>는 것까지가 이 분석의 범위입니다.</p>
+      </div>
+      <div class="cannot">
+        <h3><i class="ph ph-x-circle"></i>말할 수 없는 것</h3>
+        <p>실제 60대 사용자가 그 표현에 얼마나 흔들리는지는 공식 문서만으로 확인할 수 없어, 설문과 사용성 점검으로 분리해 다뤘습니다.</p>
+        <p>규칙 기반 태깅 결과라 정확도도 별도 검수가 필요합니다. 리포트 안에 그대로 적어 두었습니다.</p>
+      </div>
+    </div>
+    <div class="page-foot"><span>곁눈 · 공식 데이터 리포트</span><span>01 / 05</span></div>
+  </article>
+
+  <!-- 02 first collection -->
+  <article class="page" aria-labelledby="t2">
+    <p class="label">2026-07-24</p>
+    <h2 id="t2">1차 수집 분석 리포트</h2>
+    <p class="sub">공공지원·건강·금융 공식 문서 577건 · 검색용 청크 1,455건</p>
+    <dl class="stats">
+      <div><dt>정규화 문서</dt><dd class="num">577</dd></div>
+      <div><dt>검색용 청크</dt><dd class="num">1,455</dd></div>
+      <div><dt>제거된 중복</dt><dd class="num">0</dd></div>
+      <div class="warn"><dt>수집 경고</dt><dd class="num">3</dd></div>
+      <p class="muted-note">생성 시각(UTC) 2026-07-24T12:28:30+00:00</p>
+    </dl>
+    <div class="grid2 block">
+      <div><h3>영역별 수집량</h3><div class="tw"><table><thead><tr><th>영역</th><th>문서 수</th></tr></thead><tbody>
+        <tr><td><code>public_support</code></td><td>367</td></tr><tr><td><code>health</code></td><td>164</td></tr><tr><td><code>finance</code></td><td>46</td></tr></tbody></table></div></div>
+      <div><h3>출처별 수집량</h3><div class="tw"><table><thead><tr><th>출처</th><th>문서 수</th></tr></thead><tbody>
+        <tr><td>한국사회보장정보원 복지서비스정보</td><td>367</td></tr><tr><td>질병관리청 국가건강정보포털</td><td>164</td></tr><tr><td>피싱안심SOS 보도자료</td><td>24</td></tr><tr><td>피싱안심SOS 피싱 예·경보</td><td>22</td></tr></tbody></table></div></div>
+      <div><h3>위험유형 탐색 결과</h3><div class="tw"><table><thead><tr><th>위험유형</th><th>언급 문서 수</th></tr></thead><tbody>
+        <tr><td>스미싱·악성링크</td><td>19</td></tr><tr><td>투자유도</td><td>11</td></tr><tr><td>송금요구</td><td>10</td></tr><tr><td>기관사칭</td><td>9</td></tr><tr><td>개인정보요구</td><td>9</td></tr><tr><td>연애빙자</td><td>3</td></tr><tr><td>대출빙자</td><td>2</td></tr><tr><td>가족·지인사칭</td><td>2</td></tr></tbody></table></div></div>
+      <div><h3>판단에 영향을 주는 단서</h3><div class="tw"><table><thead><tr><th>단서</th><th>언급 문서 수</th></tr></thead><tbody>
+        <tr><td>권위·기관</td><td>27</td></tr><tr><td>공포·위협</td><td>26</td></tr><tr><td>긴급성</td><td>18</td></tr><tr><td>경제적이익</td><td>9</td></tr><tr><td>관계성</td><td>6</td></tr><tr><td>사회적증거</td><td>5</td></tr></tbody></table></div></div>
+      <div><h3>건강정보 제공기관</h3><div class="tw"><table><thead><tr><th>기관</th><th>문서 수</th></tr></thead><tbody>
+        <tr><td>국립암센터</td><td>115</td></tr><tr><td>국립정신건강센터</td><td>49</td></tr></tbody></table></div></div>
+      <div><h3>공공지원 소관부처 <small>상위 10개</small></h3><div class="tw"><table><thead><tr><th>부처</th><th>서비스 수</th></tr></thead><tbody>
+        <tr><td>보건복지부</td><td>132</td></tr><tr><td>여성가족부</td><td>38</td></tr><tr><td>국가보훈부</td><td>38</td></tr><tr><td>고용노동부</td><td>33</td></tr><tr><td>교육부</td><td>33</td></tr><tr><td>국토교통부</td><td>16</td></tr><tr><td>통일부</td><td>11</td></tr><tr><td>중소벤처기업부</td><td>9</td></tr><tr><td>농림축산식품부</td><td>9</td></tr><tr><td>금융위원회</td><td>8</td></tr></tbody></table></div></div>
+    </div>
+    <div class="block">
+      <h3>시니어 관련 탐색</h3>
+      <ul class="findings">
+        <li><span>노인·고령·어르신·65세·노후 키워드가 포함된 문서: <b>57건</b></span></li>
+        <li><span>이 수치는 타깃 적합성을 빠르게 점검하기 위한 탐색값이며 수작업 검수가 필요하다.</span></li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>해석</h3>
+      <ol class="findings">
+        <li><span>이 분석은 공식 문서에 등장하는 위험 수법과 판단 단서를 탐색한 결과다.</span></li>
+        <li><span>공식 자료만으로 시니어의 감정이나 실제 페인포인트를 확정할 수는 없다.</span></li>
+        <li><span>반복 빈도가 높은 위험유형은 이후 시나리오 설문과 곁눈 질문 설계의 우선순위로 사용한다.</span></li>
+        <li><span>규칙 기반 태깅 결과이므로 골드셋 수작업 검수 후 정확도를 평가해야 한다.</span></li>
+        <li><span>건강 공식정보는 진료 대체용이 아니며 사용자에게 원문과 전문 상담 안내를 함께 제공해야 한다.</span></li>
+      </ol>
+    </div>
+    <div class="page-foot"><span>곁눈 · 공식 데이터 리포트</span><span>02 / 05</span></div>
+  </article>
+
+  <!-- 03 quality -->
+  <article class="page" aria-labelledby="t3">
+    <p class="label">2026-07-24</p>
+    <h2 id="t3">데이터 품질 점검</h2>
+    <p class="sub">저장 전 배제 기준과 잔여 위험</p>
+    <dl class="stats">
+      <div><dt>전체 문서</dt><dd class="num">577</dd></div>
+      <div><dt>중복 제거</dt><dd class="num">0</dd></div>
+      <div><dt>제목 누락</dt><dd class="num">0</dd></div>
+      <div><dt>발행일 누락</dt><dd class="num">0</dd></div>
+      <div class="warn"><dt>본문 200자 미만</dt><dd class="num">206</dd></div>
+      <div><dt>첨부 이미지·문서 레코드</dt><dd class="num">29</dd></div>
+      <div class="warn"><dt>문서별 수집 경고</dt><dd class="num">3</dd></div>
+    </dl>
+    <h3>판정</h3>
+    <ol class="findings">
+      <li><span>제목 또는 본문이 없는 레코드는 저장 전에 제외했다.</span></li>
+      <li><span>발행일 누락은 원문 페이지에 구조화된 날짜가 없는 경우이며 출처 URL은 유지했다.</span></li>
+      <li><span>저작권 상태가 '확인 필요'인 자료는 내부 분석에만 사용하고 외부 재배포 전에 재검토한다.</span></li>
+      <li><span>이미지 중심 피싱 경보는 OCR을 적용하기 전까지 제목·태그·첨부 URL 중심으로 사용한다.</span></li>
+    </ol>
+    <div class="page-foot"><span>곁눈 · 공식 데이터 리포트</span><span>03 / 05</span></div>
+  </article>
+
+  <!-- 04 hypothesis check -->
+  <article class="page" aria-labelledby="t4">
+    <p class="label">2026-07-24</p>
+    <h2 id="t4">가설 검증: 층화표본 100건</h2>
+    <p class="sub">전체 577건 중 층화표본 100건으로 도메인을 비교했습니다.</p>
+    <ul class="chips">
+      <li>금융 25건</li><li>공공지원 40건</li><li>건강 35건</li>
+      <li class="note">표본은 도메인 비교를 위한 것이며 실제 이용자 비율을 의미하지 않음</li>
+    </ul>
+    <div class="grid2 block">
+      <div><h3>관찰 신호</h3><div class="tw"><table><thead><tr><th>항목</th><th>표본 문서 수</th><th>비율</th></tr></thead><tbody>
+        <tr><td>시니어_관련</td><td>15</td><td>15.0%</td></tr><tr><td>기관사칭</td><td>33</td><td>33.0%</td></tr><tr><td>긴급성_압박</td><td>32</td><td>32.0%</td></tr><tr><td>금전요구</td><td>21</td><td>21.0%</td></tr><tr><td>개인정보요구</td><td>9</td><td>9.0%</td></tr><tr><td>판단지원_단서</td><td>46</td><td>46.0%</td></tr><tr><td>복잡성_중간이상</td><td>39</td><td>39.0%</td></tr></tbody></table></div></div>
+      <div><h3>추정 페인포인트</h3><div class="tw"><table><thead><tr><th>페인포인트 신호</th><th>문서 수</th></tr></thead><tbody>
+        <tr><td>복잡한 조건·절차 해석</td><td>39</td></tr><tr><td>기관 신뢰와 긴급 압박을 동시에 판단</td><td>22</td></tr><tr><td>금전 손실 가능성 판단</td><td>21</td></tr><tr><td>개인정보 제공 여부 판단</td><td>9</td></tr></tbody></table></div></div>
+    </div>
+    <div class="conclusion">
+      <h3>결론</h3>
+      <p>현재 데이터는 정보가 분산되고, 기관 신뢰·긴급성·금전·개인정보 요구가 반복된다는 문제 가설을 지지한다.</p>
+      <p>다만 이용자의 감정·행동·이해도와 AI 코치의 효과는 공식 문서만으로 검증할 수 없다.</p>
+      <p>다음 검증에서는 시니어 또는 보호자 5~10명에게 표본 문서를 보여주고, 원문 이해도와 질문형 안내 이해도를 비교해야 한다.</p>
+    </div>
+    <div class="page-foot"><span>곁눈 · 공식 데이터 리포트</span><span>04 / 05</span></div>
+  </article>
+
+  <!-- 05 expansion -->
+  <article class="page" aria-labelledby="t5">
+    <p class="label">2026-07-31</p>
+    <h2 id="t5">확장 수집 결과</h2>
+    <p class="sub">NIA·경찰청·KISA 추가 수집 후 병합 1,017건 · 청크 2,065건</p>
+    <dl class="stats">
+      <div><dt>기존 문서</dt><dd class="num">577</dd></div>
+      <div><dt>신규 문서</dt><dd class="num">440</dd></div>
+      <div><dt>병합 문서</dt><dd class="num">1,017</dd></div>
+      <div><dt>병합 청크</dt><dd class="num">2,065</dd></div>
+    </dl>
+    <div class="grid2 block">
+      <div><h3>신규 출처</h3><div class="tw"><table><thead><tr><th>출처</th><th>문서 수</th></tr></thead><tbody>
+        <tr><td>NIA 2025 디지털정보격차 실태조사</td><td>297</td></tr><tr><td>경찰청 보이스피싱 현황</td><td>10</td></tr><tr><td>KISA 피싱·사칭 관련 보도자료</td><td>133</td></tr></tbody></table></div></div>
+      <div><h3>수집 상태</h3><div class="tw"><table><thead><tr><th>수집기</th><th>상태</th><th>건수</th></tr></thead><tbody>
+        <tr><td><code>NIA_2025_PDF</code></td><td>cached PDF 재구성</td><td>297</td></tr><tr><td><code>경찰청_KISA</code></td><td>cached 수집 재사용</td><td>143</td></tr><tr><td><code>NAVER_API_HUB</code></td><td class="status-miss">API 키 없음</td><td>0</td></tr><tr><td><code>YOUTUBE_DATA_API</code></td><td class="status-miss">API 키 없음</td><td>0</td></tr></tbody></table></div></div>
+    </div>
+    <div class="end">
+      <p><strong>박진 · Second Look</strong><br>제8회 K-디지털 트레이닝 해커톤 (2026) · 아이디어상</p>
+      <a href="https://gyeotnun.duckdns.org/" target="_blank" rel="noopener">서비스 열기 <i class="ph ph-arrow-up-right"></i></a>
+    </div>
+    <div class="page-foot"><span>곁눈 · 공식 데이터 리포트</span><span>05 / 05</span></div>
+  </article>
+</main>
+</body>
+</html>

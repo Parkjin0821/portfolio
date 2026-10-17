@@ -1,0 +1,200 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>곁눈 — 공식 데이터 수집·분석 리포트</title>
+<style>
+:root{--bg:#0B1020;--card:#121A31;--line:#22304F;--txt:#E7ECF7;--sub:#A9B6D0;
+--dim:#7E8CAA;--cyan:#22D3EE;--gold:#FCD34D}
+*{box-sizing:border-box}
+body{margin:0;padding:48px 20px 88px;background:var(--bg);color:var(--txt);
+font:15px/1.75 'Pretendard','Malgun Gothic',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto}
+.eyebrow{font-size:12.5px;letter-spacing:.14em;color:var(--cyan);font-weight:700;margin:0 0 10px}
+h1{font-size:30px;line-height:1.35;margin:0 0 12px;letter-spacing:-.02em}
+.lede{color:var(--sub);font-size:15px;margin:0 0 30px}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);
+border-radius:12px;padding:20px 24px;margin:0 0 38px}
+.note b{color:var(--gold);display:block;margin-bottom:8px;font-size:13.5px;letter-spacing:.02em}
+.note p{margin:0 0 8px;color:var(--sub);font-size:14px}
+.note p:last-child{margin:0}
+.vers{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.v{flex:1 1 210px;background:#0E1526;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.v em{display:block;font-style:normal;font-size:12px;color:var(--dim);margin-bottom:4px}
+.v strong{font-size:15px;color:var(--txt);font-weight:700}
+.v.final{border-color:rgba(34,211,238,.5)}
+.v.final strong{color:var(--cyan)}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;
+padding:8px 30px 26px;margin:0 0 26px}
+h2{font-size:20px;margin:26px 0 6px;letter-spacing:-.01em}
+h3{font-size:16px;margin:26px 0 8px;color:var(--cyan)}
+h4{font-size:14.5px;margin:20px 0 6px;color:var(--sub)}
+p{margin:10px 0;color:var(--sub)}
+ul{margin:10px 0;padding-left:20px;color:var(--sub)}
+li{margin:5px 0}
+b{color:var(--txt)}
+.tw{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:340px}
+th,td{border-bottom:1px solid var(--line);padding:9px 12px;text-align:left}
+th{color:var(--dim);font-weight:600;font-size:12.5px;letter-spacing:.04em;
+background:rgba(255,255,255,.02);white-space:nowrap}
+td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+th:not(:first-child){text-align:right}
+footer{color:var(--dim);font-size:13px;text-align:center;margin-top:40px;line-height:1.9}
+footer a{color:var(--cyan);text-decoration:none}
+@media(max-width:600px){body{padding:32px 14px 64px}h1{font-size:23px}section{padding:6px 18px 20px}}
+</style></head><body><div class="wrap">
+<p class="eyebrow">SECOND LOOK · 곁눈 · KDT 해커톤 2026</p>
+<h1>공식 데이터 수집·분석 리포트</h1>
+<p class="lede">곁눈의 근거 검색(RAG)이 참조하는 공식 문서를 수집·정규화하고, 문제 가설을 데이터로 점검한 기록입니다.
+수집 대상·태깅 규칙·검증 설계는 제가 정했고 파이프라인 실행과 결과 해석도 직접 했습니다.
+robots.txt 준수와 요청 간격(0.7초)을 지켰고, SHA-256 본문 해시로 중복을 제거한 뒤 850자·100자 오버랩으로 청킹했습니다.</p>
+
+<div class="note"><b>⚠ 수치 읽는 법 — 스냅샷이 여러 개입니다</b>
+<p>아래 리포트는 <b>파이프라인을 돌린 시점별 중간 스냅샷</b>이라, 최종 제출 기획서의 수치와 다릅니다.
+심사 제출본에 기재된 값(공식 문서 1,052건 · 청크 2,012건)이 최종 기준이며, 이 페이지는 거기에 이르기까지의 과정 기록입니다.</p>
+<div class="vers">
+<div class="v"><em>2026-07-24 · 1차 수집</em><strong>577건 · 1,455 청크</strong></div>
+<div class="v"><em>2026-07-31 · 확장 병합</em><strong>1,017건 · 2,065 청크</strong></div>
+<div class="v final"><em>2026-08-10 · 최종 제출본 기준</em><strong>1,052건 · 2,012 청크</strong></div>
+</div></div>
+
+<div class="note" style="border-left-color:#22D3EE">
+<b style="color:#22D3EE">이 데이터로 말할 수 있는 것 / 없는 것</b>
+<p>공식 문서에서 기관사칭·긴급성 압박·금전 요구 같은 <b>표현 구조가 반복된다</b>는 것까지가 이 분석의 범위입니다.</p>
+<p>실제 60대 사용자가 그 표현에 얼마나 흔들리는지는 공식 문서만으로 확인할 수 없어, 설문과 사용성 점검으로 분리해 다뤘습니다.
+규칙 기반 태깅 결과라 정확도도 별도 검수가 필요합니다 — 리포트 안에 그대로 적어 두었습니다.</p></div>
+
+<section><h2>1차 수집 분석 리포트</h2><p class="lede" style="margin:2px 0 4px">공공지원·건강·금융 공식 문서 577건 · 검색용 청크 1,455건 (2026-07-24)</p><ul>
+<li>생성 시각(UTC): 2026-07-24T12:28:30+00:00</li>
+<li>정규화 문서: <b>577건</b></li>
+<li>검색용 청크: <b>1,455건</b></li>
+<li>제거된 중복: <b>0건</b></li>
+<li>수집 경고: <b>3건</b></li>
+</ul>
+<h3>영역별 수집량</h3>
+<div class="tw"><table><thead><tr><th>영역</th><th>문서 수</th></tr></thead><tbody>
+<tr><td>public_support</td><td>367</td></tr>
+<tr><td>health</td><td>164</td></tr>
+<tr><td>finance</td><td>46</td></tr>
+</tbody></table></div>
+<h3>출처별 수집량</h3>
+<div class="tw"><table><thead><tr><th>출처</th><th>문서 수</th></tr></thead><tbody>
+<tr><td>한국사회보장정보원 복지서비스정보</td><td>367</td></tr>
+<tr><td>질병관리청 국가건강정보포털</td><td>164</td></tr>
+<tr><td>피싱안심SOS 보도자료</td><td>24</td></tr>
+<tr><td>피싱안심SOS 피싱 예·경보</td><td>22</td></tr>
+</tbody></table></div>
+<h3>위험유형 탐색 결과</h3>
+<div class="tw"><table><thead><tr><th>위험유형</th><th>언급 문서 수</th></tr></thead><tbody>
+<tr><td>스미싱·악성링크</td><td>19</td></tr>
+<tr><td>투자유도</td><td>11</td></tr>
+<tr><td>송금요구</td><td>10</td></tr>
+<tr><td>기관사칭</td><td>9</td></tr>
+<tr><td>개인정보요구</td><td>9</td></tr>
+<tr><td>연애빙자</td><td>3</td></tr>
+<tr><td>대출빙자</td><td>2</td></tr>
+<tr><td>가족·지인사칭</td><td>2</td></tr>
+</tbody></table></div>
+<h3>판단에 영향을 주는 단서</h3>
+<div class="tw"><table><thead><tr><th>단서</th><th>언급 문서 수</th></tr></thead><tbody>
+<tr><td>권위·기관</td><td>27</td></tr>
+<tr><td>공포·위협</td><td>26</td></tr>
+<tr><td>긴급성</td><td>18</td></tr>
+<tr><td>경제적이익</td><td>9</td></tr>
+<tr><td>관계성</td><td>6</td></tr>
+<tr><td>사회적증거</td><td>5</td></tr>
+</tbody></table></div>
+<h3>건강정보 제공기관</h3>
+<div class="tw"><table><thead><tr><th>기관</th><th>문서 수</th></tr></thead><tbody>
+<tr><td>국립암센터</td><td>115</td></tr>
+<tr><td>국립정신건강센터</td><td>49</td></tr>
+</tbody></table></div>
+<h3>공공지원 소관부처 상위 10개</h3>
+<div class="tw"><table><thead><tr><th>부처</th><th>서비스 수</th></tr></thead><tbody>
+<tr><td>보건복지부</td><td>132</td></tr>
+<tr><td>여성가족부</td><td>38</td></tr>
+<tr><td>국가보훈부</td><td>38</td></tr>
+<tr><td>고용노동부</td><td>33</td></tr>
+<tr><td>교육부</td><td>33</td></tr>
+<tr><td>국토교통부</td><td>16</td></tr>
+<tr><td>통일부</td><td>11</td></tr>
+<tr><td>중소벤처기업부</td><td>9</td></tr>
+<tr><td>농림축산식품부</td><td>9</td></tr>
+<tr><td>금융위원회</td><td>8</td></tr>
+</tbody></table></div>
+<h3>시니어 관련 탐색</h3>
+<ul>
+<li>노인·고령·어르신·65세·노후 키워드가 포함된 문서: <b>57건</b></li>
+<li>이 수치는 타깃 적합성을 빠르게 점검하기 위한 탐색값이며 수작업 검수가 필요하다.</li>
+</ul>
+<h3>해석</h3>
+<ul>
+<li>이 분석은 공식 문서에 등장하는 위험 수법과 판단 단서를 탐색한 결과다.</li>
+<li>공식 자료만으로 시니어의 감정이나 실제 페인포인트를 확정할 수는 없다.</li>
+<li>반복 빈도가 높은 위험유형은 이후 시나리오 설문과 곁눈 질문 설계의 우선순위로 사용한다.</li>
+<li>규칙 기반 태깅 결과이므로 골드셋 수작업 검수 후 정확도를 평가해야 한다.</li>
+<li>건강 공식정보는 진료 대체용이 아니며 사용자에게 원문과 전문 상담 안내를 함께 제공해야 한다.</li>
+</ul></section>
+<section><h2>데이터 품질 점검</h2><p class="lede" style="margin:2px 0 4px">저장 전 배제 기준과 잔여 위험 (2026-07-24)</p><ul>
+<li>전체 문서: 577</li>
+<li>중복 제거: 0</li>
+<li>제목 누락: 0</li>
+<li>발행일 누락: 0</li>
+<li>본문 200자 미만: 206</li>
+<li>첨부 이미지·문서가 있는 레코드: 29</li>
+<li>문서별 수집 경고: 3</li>
+</ul>
+<h3>판정</h3>
+<ul>
+<li>제목 또는 본문이 없는 레코드는 저장 전에 제외했다.</li>
+<li>발행일 누락은 원문 페이지에 구조화된 날짜가 없는 경우이며 출처 URL은 유지했다.</li>
+<li>저작권 상태가 &#x27;확인 필요&#x27;인 자료는 내부 분석에만 사용하고 외부 재배포 전에 재검토한다.</li>
+<li>이미지 중심 피싱 경보는 OCR을 적용하기 전까지 제목·태그·첨부 URL 중심으로 사용한다.</li>
+</ul></section>
+<section><h2>가설 검증 — 층화표본 100건</h2><p class="lede" style="margin:2px 0 4px">금융 25 · 공공지원 40 · 건강 35 (2026-07-24)</p><ul>
+<li>분석 대상: 전체 577건 중 층화표본 100건</li>
+<li>표본 구성: 금융 25건, 공공지원 40건, 건강 35건</li>
+<li>주의: 표본은 도메인 비교를 위한 것이며 실제 이용자 비율을 의미하지 않음</li>
+</ul>
+<h3>관찰 신호</h3>
+<div class="tw"><table><thead><tr><th>항목</th><th>표본 문서 수</th><th>비율</th></tr></thead><tbody>
+<tr><td>시니어_관련</td><td>15</td><td>15.0%</td></tr>
+<tr><td>기관사칭</td><td>33</td><td>33.0%</td></tr>
+<tr><td>긴급성_압박</td><td>32</td><td>32.0%</td></tr>
+<tr><td>금전요구</td><td>21</td><td>21.0%</td></tr>
+<tr><td>개인정보요구</td><td>9</td><td>9.0%</td></tr>
+<tr><td>판단지원_단서</td><td>46</td><td>46.0%</td></tr>
+<tr><td>복잡성_중간이상</td><td>39</td><td>39.0%</td></tr>
+</tbody></table></div>
+<h3>추정 페인포인트</h3>
+<div class="tw"><table><thead><tr><th>페인포인트 신호</th><th>문서 수</th></tr></thead><tbody>
+<tr><td>복잡한 조건·절차 해석</td><td>39</td></tr>
+<tr><td>기관 신뢰와 긴급 압박을 동시에 판단</td><td>22</td></tr>
+<tr><td>금전 손실 가능성 판단</td><td>21</td></tr>
+<tr><td>개인정보 제공 여부 판단</td><td>9</td></tr>
+</tbody></table></div>
+<h3>결론</h3>
+<p>현재 데이터는 정보가 분산되고, 기관 신뢰·긴급성·금전·개인정보 요구가 반복된다는 문제 가설을 지지한다.</p>
+<p>다만 이용자의 감정·행동·이해도와 AI 코치의 효과는 공식 문서만으로 검증할 수 없다.</p>
+<p>다음 검증에서는 시니어 또는 보호자 5~10명에게 표본 문서를 보여주고, 원문 이해도와 질문형 안내 이해도를 비교해야 한다.</p></section>
+<section><h2>확장 수집 결과</h2><p class="lede" style="margin:2px 0 4px">NIA·경찰청·KISA 추가 수집 후 병합 1,017건 · 청크 2,065건 (2026-07-31)</p><ul>
+<li>기존 문서: 577건</li>
+<li>신규 문서: 440건</li>
+<li>병합 문서: 1,017건</li>
+<li>병합 청크: 2,065건</li>
+</ul>
+<h3>신규 출처</h3>
+<div class="tw"><table><thead><tr><th>출처</th><th>문서 수</th></tr></thead><tbody>
+<tr><td>NIA 2025 디지털정보격차 실태조사</td><td>297</td></tr>
+<tr><td>경찰청 보이스피싱 현황</td><td>10</td></tr>
+<tr><td>KISA 피싱·사칭 관련 보도자료</td><td>133</td></tr>
+</tbody></table></div>
+<h3>수집 상태</h3>
+<div class="tw"><table><thead><tr><th>수집기</th><th>상태</th><th>건수</th></tr></thead><tbody>
+<tr><td>NIA_2025_PDF</td><td>rebuilt from cached PDF</td><td>297</td></tr>
+<tr><td>경찰청_KISA</td><td>reused cached collection</td><td>143</td></tr>
+<tr><td>NAVER_API_HUB</td><td>missing NCP_APIGW_API_KEY_ID or NCP_APIGW_API_KEY</td><td>0</td></tr>
+<tr><td>YOUTUBE_DATA_API</td><td>missing YOUTUBE_API_KEY or GOOGLE_API_KEY</td><td>0</td></tr>
+</tbody></table></div></section>
+<footer>박진 · Second Look — 제8회 K-디지털 트레이닝 해커톤 (2026) · 🏆 아이디어상<br>
+서비스 <a href="https://gyeotnun.duckdns.org/">gyeotnun.duckdns.org</a></footer>
+</div></body></html>
